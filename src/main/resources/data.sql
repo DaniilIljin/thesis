@@ -1,6 +1,9 @@
 INSERT INTO location (id, name, address, description)
 VALUES (1, 'Nilat', 'Akadeemia tee', 'Closest plase');
 
+INSERT INTO category (name, description, location_id)
+VALUES ('BIO', 'BIO waste', 1);
+
 INSERT INTO category (id, name, description, location_id)
 VALUES (1, 'Package', 'Clean package', 1);
 
