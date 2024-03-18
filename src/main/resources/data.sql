@@ -5,16 +5,16 @@ INSERT INTO category (name, description, location_id)
 VALUES ('Package', 'Clean package', 1);
 
 INSERT INTO category (name, description)
-VALUES ('Glass', 'All types of glass');
+VALUES ('Electronics', 'All sorts of electronics');
 
 INSERT INTO category (name, description)
-VALUES ('Old Paper', 'JUst any type of old paper');
+VALUES ('BIO waste', 'All organic waste');
 
 INSERT INTO sub_category (name, description, category_id)
 VALUES ('Bottles', 'Clean bottles', 1);
 
 INSERT INTO sub_category (name, description, category_id)
-VALUES ('Plastic boxes', 'Any size plastic boxes', 1);
+VALUES ('Plastic', 'Plastic packaging', 1);
 
 INSERT INTO item (name, description, sub_category_id)
 VALUES ('Glass bottle', 'Package must be clean', 1);
