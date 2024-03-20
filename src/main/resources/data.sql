@@ -1,14 +1,18 @@
-INSERT INTO location (name, address, description)
-VALUES ('Nilat', 'Akadeemia tee', 'Closest plase');
 
-INSERT INTO category (name, description, location_id)
+INSERT INTO rule (name, description)
+VALUES ('General rules', 'General rules in estonia');
+
+INSERT INTO location (name, address, description, rule_id)
+VALUES ('Nilat', 'Akadeemia tee', 'Closest plase', 1);
+
+INSERT INTO category (name, description, rule_id)
 VALUES ('Package', 'Clean package', 1);
 
-INSERT INTO category (name, description)
-VALUES ('Electronics', 'All sorts of electronics');
+INSERT INTO category (name, description, rule_id)
+VALUES ('Electronics', 'All sorts of electronics', 1);
 
-INSERT INTO category (name, description)
-VALUES ('BIO waste', 'All organic waste');
+INSERT INTO category (name, description, rule_id)
+VALUES ('BIO waste', 'All organic waste', 1);
 
 INSERT INTO sub_category (name, description, category_id)
 VALUES ('Bottles', 'Clean bottles', 1);

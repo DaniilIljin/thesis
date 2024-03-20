@@ -19,7 +19,7 @@ public class Category {
     private String description;
 
     @ManyToOne
-    private Location location;
+    private Rule rule;
 
     @OneToMany
     @JoinColumn(name = "category_id", referencedColumnName = "id")
