@@ -21,8 +21,6 @@ public class Location {
 
     private  String description;
 
-    @OneToMany
-    @JsonIgnore
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private List<Category> categories = new ArrayList<>();
+    @ManyToOne
+    private Rule rule;
 }
