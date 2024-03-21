@@ -1,8 +1,9 @@
 package org.dailji.demo2.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dailji.demo2.model.Location;
-import org.dailji.demo2.repository.LocationRepository;
+import org.dailji.demo2.dto.LocationDTO;
+import org.dailji.demo2.dto.RuleDTO;
+import org.dailji.demo2.service.LocationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,24 +13,22 @@ import java.util.List;
 @RequestMapping("api/location")
 public class LocationController {
 
-    private final LocationRepository repository;
+    private final LocationService service;
     @GetMapping("/")
-    public List<Location> getAll(){
-        return repository.findAll();
+    public List<LocationDTO> getAll(){
+        return service.findAll();
     }
 
+    @GetMapping("/rules")
+    public List<RuleDTO> getExistingRules(){return service.getRulesExistingRules();
+    }
+    @GetMapping("/getById/{id}")
+    public LocationDTO getById(@PathVariable Long id){return service.getById(id);
+    }
     @PostMapping("/save")
-    public Location save(@RequestBody Location category){
-        return repository.save(category);
+    public LocationDTO save(@RequestBody LocationDTO location){return service.save(location);
     }
-
-    @PutMapping("/update")
-    public Location update(@RequestBody Location category){
-        return repository.save(category);
-    }
-
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id){
-        repository.deleteById(id);
+    public void delete(@PathVariable Long id){service.delete(id);
     }
 }
