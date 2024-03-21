@@ -1,5 +1,6 @@
 package org.dailji.demo2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class Category {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     private Rule rule;
 
     @OneToMany
