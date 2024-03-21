@@ -1,9 +1,7 @@
 package org.dailji.demo2.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.dailji.demo2.dto.LocationDTO;
 import org.dailji.demo2.dto.RuleDTO;
-import org.dailji.demo2.model.Location;
 import org.dailji.demo2.model.Rule;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
