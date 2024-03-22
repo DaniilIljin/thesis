@@ -40,5 +40,14 @@ CREATE TABLE if not exists item
 
 );
 
-
-
+CREATE TABLE IF not exists package (
+    ean Bigint PRIMARY KEY,
+    brand Varchar NOT NULL,
+    name Varchar NOT NULL,
+    size Float,
+    unit Varchar,
+    material Smallint,
+    is_recyclable Boolean,
+    material_class Smallint,
+    package_weight Float
+);

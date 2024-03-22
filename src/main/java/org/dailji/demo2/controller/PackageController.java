@@ -1,11 +1,15 @@
 package org.dailji.demo2.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.dailji.demo2.helpers.CSVHelper;
 import org.dailji.demo2.model.Material;
 import org.dailji.demo2.model.Package;
 import org.dailji.demo2.repository.PackageRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +18,17 @@ import java.util.Optional;
 public class PackageController {
 
     private final PackageRepository repository;
+
+    @GetMapping("/")
+    public List<Package> getAll() throws IOException {
+        String filePath = "/Users/kevinmihkelson/Downloads/product_packaging.csv";
+        List<Package> packages = CSVHelper.csvToPackages(filePath);
+        for (Package p : packages) {
+            System.out.println(p.toString());
+        }
+
+        return repository.findAll();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Material> getById(@PathVariable Long id) {
