@@ -22,26 +22,25 @@ public class PackageController {
     @GetMapping("/")
     public List<Package> getAll() throws IOException {
         String filePath = "/Users/kevinmihkelson/Downloads/product_packaging.csv";
-        List<Package> packages = CSVHelper.csvToPackages(filePath);
-        for (Package p : packages) {
-            System.out.println(p.toString());
-        }
-
+        // TODO - Remove the csv helper, currently it's at a completely random place, also remove this endpoint
+        //List<Package> packages = CSVHelper.csvToPackages(filePath);
+        //repository.saveAll(packages);
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Material> getById(@PathVariable Long id) {
+    public ResponseEntity<Package> getById(@PathVariable Long id) {
         Optional<Package> packageOptional = repository.findById(id);
 
         /*
         TODO - Link trash to user for history purposes
         TODO - Add logic to differentiate between cardboard and paper
+        TODO - Add sorting logic
         */
 
         if (packageOptional.isPresent()) {
             Package trash = packageOptional.get();
-            return ResponseEntity.ok(trash.getMaterial());
+            return ResponseEntity.ok(trash);
         } else {
             return ResponseEntity.notFound().build();
         }

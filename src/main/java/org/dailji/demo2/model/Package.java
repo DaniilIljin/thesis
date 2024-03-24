@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "package")
 public class Package {
-
     @Id
     private Long ean;
-
     private String brand;
     private String name;
     private Double size;
