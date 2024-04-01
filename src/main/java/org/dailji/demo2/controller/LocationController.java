@@ -3,7 +3,7 @@ package org.dailji.demo2.controller;
 import lombok.RequiredArgsConstructor;
 import org.dailji.demo2.dto.LocationDTO;
 import org.dailji.demo2.dto.RuleDTO;
-import org.dailji.demo2.service.LocationService;
+import org.dailji.demo2.service.MainService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("api/location")
 public class LocationController {
 
-    private final LocationService service;
+    private final MainService service;
     @GetMapping("/")
     public List<LocationDTO> getAll(){
         return service.findAll();

@@ -13,4 +13,3 @@ public class LocationDTO{
     private String ruleName;
     private String ruleDescription;
 }
-

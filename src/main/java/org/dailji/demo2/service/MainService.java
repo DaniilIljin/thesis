@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LocationService {
+public class MainService {
     private final UOW uow;
     private final LocationMapper locationMapper;
     private final RuleMapper ruleMapper;
