@@ -2,7 +2,7 @@ package org.dailji.demo2.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.dailji.demo2.dto.LocationDTO;
-import org.dailji.demo2.dto.RuleDTO;
+import org.dailji.demo2.dto.SmallRuleDTO;
 import org.dailji.demo2.service.MainService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class LocationController {
     }
 
     @GetMapping("/rules")
-    public List<RuleDTO> getExistingRules(){return service.getRulesExistingRules();
+    public List<SmallRuleDTO> getExistingRules(){return service.getSmallExistingRules();
     }
     @GetMapping("/getById/{id}")
     public LocationDTO getById(@PathVariable Long id){return service.getById(id);

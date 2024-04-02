@@ -1,7 +1,7 @@
 package org.dailji.demo2.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.dailji.demo2.dto.RuleDTO;
+import org.dailji.demo2.dto.SmallRuleDTO;
 import org.dailji.demo2.model.Rule;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RuleMapper {
     private final ModelMapper mapper;
-    public RuleDTO convertRuleToRuleDTO(Rule object){
-        return mapper.map(object, RuleDTO.class);
+    public SmallRuleDTO convertRuleToRuleDTO(Rule object){
+        return mapper.map(object, SmallRuleDTO.class);
     }
-    public Rule convertRuleDTOToRule(RuleDTO object){
+    public Rule convertRuleDTOToRule(SmallRuleDTO object){
         return mapper.map(object, Rule.class);
     }
 }

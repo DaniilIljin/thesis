@@ -2,7 +2,7 @@ package org.dailji.demo2.service;
 
 import lombok.RequiredArgsConstructor;
 import org.dailji.demo2.dto.LocationDTO;
-import org.dailji.demo2.dto.RuleDTO;
+import org.dailji.demo2.dto.SmallRuleDTO;
 import org.dailji.demo2.mapper.LocationMapper;
 import org.dailji.demo2.mapper.RuleMapper;
 import org.dailji.demo2.model.Location;
@@ -43,12 +43,21 @@ public class MainService {
         return locationMapper.convertLocationToLocationDTO(location);
     }
 
-    public List<RuleDTO> getRulesExistingRules(){
+    public List<SmallRuleDTO> getSmallExistingRules(){
         return uow.getRuleRepository().findAll().stream()
                 .map(ruleMapper::convertRuleToRuleDTO).toList();
     }
 
     public void delete(Long id) {
         uow.getLocationRepository().deleteById(id);
+    }
+
+    public List<Rule> getFullExistingRules() {
+        return uow.getRuleRepository()
+                .findAll();
+    }
+
+    public Rule saveAll(Rule fullRule) {
+        return uow.getRuleRepository().save(fullRule);
     }
 }
