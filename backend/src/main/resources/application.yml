@@ -2,9 +2,9 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: jdbc:postgresql://postgres:5432/mydatabase
-    username: myuser
-    password: secret
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -14,3 +14,7 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+dotenv:
+  enabled: true
+  location: classpath:.env
