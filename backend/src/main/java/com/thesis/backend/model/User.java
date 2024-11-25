@@ -25,6 +25,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "seller")
+    private List<Item> items;
+
+    @OneToMany(mappedBy = "buyer")
+    private List<LikedItem> likedItems;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
