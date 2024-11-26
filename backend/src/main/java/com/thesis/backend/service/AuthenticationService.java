@@ -1,6 +1,7 @@
 package com.thesis.backend.service;
 
 import com.thesis.backend.model.AuthenticationResponse;
+import com.thesis.backend.model.Role;
 import com.thesis.backend.model.User;
 import com.thesis.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class AuthenticationService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+        user.setRole(Role.USER);
         user = userRepository.save(user);
 
         String token = jwtService.generateToken(user);
