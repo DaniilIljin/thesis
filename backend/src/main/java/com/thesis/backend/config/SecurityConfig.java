@@ -27,12 +27,16 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private final CustomCorsConfiguration customCorsConfiguration;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(c -> c.configurationSource(customCorsConfiguration))
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/login", "/register")
+                        req -> req
+                                .requestMatchers("/login", "/register")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
