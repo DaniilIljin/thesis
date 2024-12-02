@@ -6,7 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RepositoryRestResource
-// Repository for Size
+
 public interface SizeRepository extends JpaRepository<Size, Long> {
 }

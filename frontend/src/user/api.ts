@@ -1,5 +1,4 @@
-import apiClient from "../Axios.ts";
-// Service function to fetch user data from a protected route
+import apiClient from "../shared/Axios.ts";
 export const fetchUserData = async () => {
     try {
         const response = await apiClient.get('/user'); // Adjust the endpoint as necessary

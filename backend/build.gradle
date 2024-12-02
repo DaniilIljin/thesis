@@ -44,6 +44,7 @@ dependencies {
 // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.6'
     implementation 'me.paulschwarz:spring-dotenv:3.0.0'
+    implementation 'org.modelmapper:modelmapper:3.2.1'
 
 
 
