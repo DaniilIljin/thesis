@@ -34,7 +34,7 @@ VALUES --- password: password123
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (4, 2, 1, 1, 'Blue Nike Shirt', 'AVAILABLE', 'A stylish blue Nike shirt for men.', 29.99, NULL),
        (5, 3, 2, 1, 'Black Adidas Pants', 'AVAILABLE', 'Comfortable black Adidas pants for men.', 49.99, NULL),
-       (6, 2, 3, 1, 'Red Zara Dress', 'AVAILABLE', 'Elegant red Zara dress for women.', 59.99, NULL);
+       (6, 2, 3, 2, 'Red Zara Dress', 'AVAILABLE', 'Elegant red Zara dress for women.', 59.99, NULL);
 
 -- Insert pictures for items
 INSERT INTO picture (item_id, file_name, file_location)

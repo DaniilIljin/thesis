@@ -2,7 +2,9 @@ package com.thesis.backend.service;
 
 import com.thesis.backend.dto.item.ItemAddDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
+import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.mapper.ItemMapper;
+import com.thesis.backend.mapper.MainMapper;
 import com.thesis.backend.model.Category;
 import com.thesis.backend.model.Item;
 import com.thesis.backend.model.User;
@@ -12,15 +14,42 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
     private final UnitOfWork unitOfWork;
     private final ItemMapper itemMapper;
+    private final MainMapper mapper;
 
     public ItemViewDTO getItemById(Long id) {
         Item item = unitOfWork.getItemRepository().findById(id).orElseThrow(RuntimeException::new);
         return itemMapper.toItemViewDTO(item);
+    }
+
+    public List<ItemDTO> getAllUserItems(){
+        User user = getUser();
+        return unitOfWork.getItemRepository().findAllBySellerId(user.getId()).stream()
+                .map(mapper::toItemDTO).toList();
+    }
+
+    public void deleteUserItem(Long id){
+        User user = getUser();
+        unitOfWork.getItemRepository().findById(id).ifPresent(item -> {
+            if(item.getSeller().getId().equals(user.getId())){
+                unitOfWork.getItemRepository().delete(item);
+            } else {
+                throw new IllegalArgumentException("You can only delete your own items.");
+            }
+        });
+    }
+
+    private User getUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = unitOfWork.getUserRepository().findByUsername(username).orElseThrow(RuntimeException::new);
+        return user;
     }
 
     @Transactional
