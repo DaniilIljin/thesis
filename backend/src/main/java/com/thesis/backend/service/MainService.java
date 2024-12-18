@@ -1,10 +1,9 @@
 package com.thesis.backend.service;
 
 import com.thesis.backend.dto.BrandDTO;
-import com.thesis.backend.dto.CategoryDTO;
-import com.thesis.backend.dto.ItemDTO;
+import com.thesis.backend.dto.shop.CategoryDTO;
 import com.thesis.backend.dto.SizeDTO;
-import com.thesis.backend.mapper.DtoMapper;
+import com.thesis.backend.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +15,10 @@ public class MainService {
 
     private final UnitOfWork unitOfWork;
 
-    private final DtoMapper mapper;
+    private final MainMapper mapper;
 
-    public List<ItemDTO> getAllItems() {
+
+    public List<com.thesis.backend.dto.shop.ItemDTO> getAllItems() {
         return unitOfWork.getItemRepository().findAll().stream()
                 .map(mapper::toItemDTO).toList();
     }

@@ -1,8 +1,8 @@
 package com.thesis.backend.mapper;
 
 import com.thesis.backend.dto.BrandDTO;
-import com.thesis.backend.dto.CategoryDTO;
-import com.thesis.backend.dto.ItemDTO;
+import com.thesis.backend.dto.shop.CategoryDTO;
+import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.dto.SizeDTO;
 import com.thesis.backend.model.Brand;
 import com.thesis.backend.model.Category;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DtoMapper {
+public class MainMapper {
 
     private final ModelMapper modelMapper = new ModelMapper();
 

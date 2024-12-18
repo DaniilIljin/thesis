@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +27,9 @@ public class Item {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Picture> pictures;
+
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller;
@@ -35,16 +39,13 @@ public class Item {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ItemStatus status;
+    private ItemStatus status = ItemStatus.AVAILABLE;
 
     @Column(length = 150)
     private String description;
 
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal price;
-
-    @Column(nullable = false)
-    private int orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")

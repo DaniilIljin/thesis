@@ -1,4 +1,4 @@
-package com.thesis.backend.dto;
+package com.thesis.backend.dto.shop;
 
 import lombok.Data;
 
