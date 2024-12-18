@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import { Brand } from "../dto/Brand";
+import {BrandDTO} from "../dto.ts";
 
 type Props = {
-    brand: Brand;
+    brand: BrandDTO;
 };
 
 const BrandAccordion: React.FC<Props> = ({ brand }) => {

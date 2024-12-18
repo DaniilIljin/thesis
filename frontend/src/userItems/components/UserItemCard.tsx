@@ -11,6 +11,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import { ItemDTO } from "../dto.ts";
+import { deleteUserItem} from "../api.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 type Props = {
     item: ItemDTO;
@@ -18,6 +20,19 @@ type Props = {
 
 const UserItemCard = (props: Props) => {
     const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
+
+    const deleteItemMutation = useMutation({
+        mutationFn: (id: number) => deleteUserItem(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries('userItems');
+        },
+        onError: (error) => {
+            // Handle error here if needed
+            console.error('Error deleting item:', error);
+        },
+    });
 
     const handleClick = () => {
         if (props.item?.id) {
@@ -30,8 +45,15 @@ const UserItemCard = (props: Props) => {
     const handleEdit = () => {
     };
 
-    const handleDelete = () => {
-        confirm("Are you sure you want to delete this item?")
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this item?")) {
+            try {
+                deleteItemMutation.mutateAsync(props.item.id);
+            } catch (error) {
+                console.error("Error deleting item", error);
+                alert("Failed to delete item");
+            }
+        }
     };
 
     return (

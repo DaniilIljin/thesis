@@ -23,7 +23,7 @@ const UserItemsGrid = () => {
         <>
             <Grid container spacing={2}>
                 {data.map((item, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Grid item xs={12} sm={4} md={3} key={index}>
                         <UserItemCard item={item} />
                     </Grid>
                 ))}

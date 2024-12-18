@@ -9,3 +9,23 @@ export const fetchUserItems = (): Promise<ItemDTO[]> => {
             throw new Error('Failed to fetch items');
         });
 };
+
+export const deleteUserItem = (id: number): Promise<void> => {
+    return apiClient.delete(`/api/items/${id}`)
+        .then(() => {
+            console.log('Item deleted successfully');
+        })
+        .catch((error) => {
+            throw new Error(`Failed to delete item with ID: ${id}`);
+        });
+};
+
+export const deleteItem = (id: number): Promise<void> => {
+    return apiClient.delete(`/api/items/${id}`)
+        .then(() => {
+            alert('Item deleted successfully');
+        })
+        .catch(error => {
+            throw new Error(`Failed to delete item with ID: ${id}`);
+        });
+};

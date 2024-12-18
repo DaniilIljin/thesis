@@ -7,11 +7,20 @@ import {
     Switch,
     Link,
     IconButton,
-    Drawer, Tooltip,
+    Drawer,
+    Tooltip,
+    ButtonGroup,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthProvider.tsx";
 import MenuIcon from "@mui/icons-material/Menu";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FolderIcon from "@mui/icons-material/Folder";
+import AddIcon from "@mui/icons-material/Add";
+import LoginIcon from '@mui/icons-material/Login';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 type Props = {
     themeMode: boolean;
@@ -31,63 +40,98 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
     const toggleDrawer = (open: boolean) => setDrawerOpen(open);
 
     const authLinks = (
-        <>
-            <Typography >
-                <Link p={2} to="#" color="inherit" underline="none" component={RouterLink} onClick={handleLogout}>
-                    logout
-                </Link>
-                <Link p={2} color="inherit" underline="none" component={RouterLink} to='#'>
-                    profile
-                </Link>
-            </Typography>
-        </>
+        <ButtonGroup>
+            <Tooltip title="Logout" arrow>
+                <IconButton onClick={handleLogout} color="inherit">
+                    <LogoutIcon />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Profile" arrow>
+                <IconButton onClick={() => navigate("/profile")} color="inherit">
+                    <AccountCircleIcon />
+                </IconButton>
+            </Tooltip>
+        </ButtonGroup>
     );
 
+    // Guest user links with icons
     const guestLinks = (
-        <>
-            <Typography >
-                <Link p={2} color="inherit" underline="none" component={RouterLink} to="/signup">
-                    signup
-                </Link>
-                <Link p={2} color="inherit" underline="none" component={RouterLink} to="/login">
-                    login
-                </Link>
-            </Typography>
-        </>
+        <ButtonGroup>
+            <Tooltip title="Sign Up" arrow>
+                <IconButton component={RouterLink} to="/signup" color="inherit">
+                    <AppRegistrationIcon />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Login" arrow>
+                <IconButton component={RouterLink} to="/login" color="inherit">
+                    <LoginIcon />
+                </IconButton>
+            </Tooltip>
+        </ButtonGroup>
     );
 
     return (
         <>
             <AppBar sx={{ borderRadius: 2 }} position="static">
-                <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    {/* Left: Logo */}
+                    <Typography variant="h6" sx={{ fontFamily: 'Cooper Black, sans-serif', fontSize: 'large' }}>
                         <Tooltip title="Home page">
-                        <Link component={RouterLink} color="inherit" underline="none" to={"/"}>
-                            Selling Platform
-                        </Link>
+                            <Link component={RouterLink} color="inherit" underline="none" to={"/"}>
+                                selling platform
+                            </Link>
                         </Tooltip>
                     </Typography>
 
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ display: { xs: "block", sm: "none" } }}
-                        onClick={() => toggleDrawer(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    {/* Center: Links only visible if authorized */}
+                    {isAuthorized && (
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Tooltip title="My favorites">
+                                <Link component={RouterLink} to="/myFavorites" color="inherit">
+                                    <IconButton color="inherit">
+                                        <FavoriteIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
 
-                    <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-                        {isAuthorized ? authLinks : guestLinks}
+                            <Tooltip title="My items">
+                                <Link component={RouterLink} to="/myItems" color="inherit">
+                                    <IconButton color="inherit">
+                                        <FolderIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
+
+                            <Tooltip title="Add new item">
+                                <Link component={RouterLink} to="/addItem" color="inherit">
+                                    <IconButton color="inherit">
+                                        <AddIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
+                        </Box>
+                    )}
+
+                    {/* Right: Menu and User Links */}
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{ display: { xs: "block", sm: "none" } }}
+                            onClick={() => toggleDrawer(true)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+
+                        {/* Centered Button Group for Auth Links */}
+                        <Box sx={{ display: { xs: "none", sm: "flex" }, justifyContent: "center", flexGrow: 1 }}>
+                            {isAuthorized ? authLinks : guestLinks}
+                        </Box>
+
+                        {/* Theme Toggle Switch */}
+                        <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
                     </Box>
-
-                    <Switch
-                        sx={{ display: { xs: "none", sm: "flex" } }}
-                        checked={themeMode}
-                        onChange={toggleThemeMode}
-                        color="primary"
-                    />
                 </Toolbar>
             </AppBar>
 

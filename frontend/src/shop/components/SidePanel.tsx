@@ -43,32 +43,32 @@ const SidePanel = () => {
                 elevation={5}
                 sx={{ padding: 2, bgcolor: "background.paper" }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        mb: 1,
-                    }}
-                >
-                    <ButtonGroup variant="contained">
-                        <Tooltip title="My favorites">
-                            <IconButton component={Link} to='/myFavorites'>
-                                <FavoriteIcon/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="My items" >
-                            <IconButton component={Link} to='/myItems'>
-                                <FolderIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Add new item">
-                            <IconButton component={Link} to='/addItem'>
-                                <AddIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </ButtonGroup>
-                </Box>
+                {/*<Box*/}
+                {/*    sx={{*/}
+                {/*        display: "flex",*/}
+                {/*        alignItems: "center",*/}
+                {/*        justifyContent: "center",*/}
+                {/*        mb: 1,*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <ButtonGroup variant="contained">*/}
+                {/*        <Tooltip title="My favorites">*/}
+                {/*            <IconButton component={Link} to='/myFavorites'>*/}
+                {/*                <FavoriteIcon/>*/}
+                {/*            </IconButton>*/}
+                {/*        </Tooltip>*/}
+                {/*        <Tooltip title="My items" >*/}
+                {/*            <IconButton component={Link} to='/myItems'>*/}
+                {/*                <FolderIcon />*/}
+                {/*            </IconButton>*/}
+                {/*        </Tooltip>*/}
+                {/*        <Tooltip title="Add new item">*/}
+                {/*            <IconButton component={Link} to='/addItem'>*/}
+                {/*                <AddIcon />*/}
+                {/*            </IconButton>*/}
+                {/*        </Tooltip>*/}
+                {/*    </ButtonGroup>*/}
+                {/*</Box>*/}
                 <Box sx={{ mb: 1 }}>
                     <TextField
                         fullWidth
