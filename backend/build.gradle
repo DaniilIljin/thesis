@@ -46,6 +46,8 @@ dependencies {
     implementation 'me.paulschwarz:spring-dotenv:3.0.0'
     implementation 'org.modelmapper:modelmapper:3.2.1'
 
+    implementation platform('software.amazon.awssdk:bom:2.20.123') // Replace with the latest version
+    implementation 'software.amazon.awssdk:s3'
 
 
 }

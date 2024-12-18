@@ -1,6 +1,6 @@
 spring:
-  main:
-    banner-mode: off
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USER}
@@ -17,10 +17,11 @@ spring:
   sql:
     init:
       mode: always
-dotenv:
-  enabled: true
-  location: classpath:.env
 logging:
   level:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
+aws:
+   region: ${AWS_REGION}
+   accessKeyId: ${AWS_ACCESS_KEY_ID}
+   secretKey: ${AWS_SECRET_ACCESS_KEY}

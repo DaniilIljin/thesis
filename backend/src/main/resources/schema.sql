@@ -41,7 +41,6 @@ create table item (
                       name         varchar(40) not null,
                       description  varchar(150),
                       price        numeric(10, 2) not null,
-                      order_status integer not null,
                       status       VARCHAR(15) NOT NULL CHECK (status IN ('AVAILABLE', 'UNAVAILABLE', 'SOLD')),
                       brand_id     bigint references brand,
                       category_id  bigint not null references category,
