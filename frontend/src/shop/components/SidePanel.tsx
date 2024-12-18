@@ -8,7 +8,7 @@ import {
     Divider,
     IconButton,
     Paper,
-    TextField,
+    TextField, Tooltip,
     Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -52,15 +52,21 @@ const SidePanel = () => {
                     }}
                 >
                     <ButtonGroup variant="contained">
-                        <IconButton>
-                            <FavoriteIcon />
-                        </IconButton>
-                        <IconButton>
-                            <FolderIcon />
-                        </IconButton>
-                        <IconButton component={Link} to={"addItem"}>
-                            <AddIcon />
-                        </IconButton>
+                        <Tooltip title="My favorites">
+                            <IconButton component={Link} to='/myFavorites'>
+                                <FavoriteIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="My items" >
+                            <IconButton component={Link} to='/myItems'>
+                                <FolderIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Add new item">
+                            <IconButton component={Link} to='/addItem'>
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
                     </ButtonGroup>
                 </Box>
                 <Box sx={{ mb: 1 }}>

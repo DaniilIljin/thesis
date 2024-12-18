@@ -4,7 +4,7 @@ import {
     CardContent,
     Typography,
     Box,
-    IconButton,
+    IconButton, Tooltip,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteSharpIcon from "@mui/icons-material/FavoriteSharp";
@@ -22,7 +22,11 @@ const ItemCard = (props: Props) => {
     const [isToggled, setIsToggled] = useState(false);
 
     const handleClick = () => {
-        navigate(`/viewItem/${props.item.id}`);
+        if (props.item?.id) {
+            navigate(`/viewItem/${props.item.id}`);
+        } else {
+            console.error("Item ID is undefined");
+        }
     };
 
     const handleToggle = () => {
@@ -40,9 +44,22 @@ const ItemCard = (props: Props) => {
                     // alt={item.title}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h6" component="div">
-                        {props.item.name}
-                    </Typography>
+                    <Tooltip title={props.item.name} arrow>
+                        <Typography
+                            gutterBottom
+                            variant="h6"
+                            component="div"
+                            sx={{
+                                display: "inline-block",
+                                maxWidth: "100%",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {props.item.name}
+                        </Typography>
+                    </Tooltip>
                     <Typography variant="body2" color="text.secondary">
                         {props.item.sizeName}
                     </Typography>

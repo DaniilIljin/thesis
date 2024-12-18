@@ -4,9 +4,8 @@ import {BrandDTO} from "./dto.ts";
 import {SizeDTO} from "./dto.ts";
 import apiClient from "../shared/Axios.ts";
 
-// Fetch all items
 export const fetchItems = (): Promise<ItemDTO[]> => {
-    return apiClient.get('/api/items')
+    return apiClient.get('/api/shop/items')
         .then(response => response.data)
         .catch(error => {
             console.error(error)
@@ -14,9 +13,8 @@ export const fetchItems = (): Promise<ItemDTO[]> => {
         });
 };
 
-// Fetch all categories
 export const fetchCategories = (): Promise<CategoryDTO[]> => {
-    return apiClient.get('/api/categories')
+    return apiClient.get('/api/shop/categories')
         .then(response => response.data)
         .catch(error => {
             console.error(error)
@@ -25,9 +23,8 @@ export const fetchCategories = (): Promise<CategoryDTO[]> => {
 };
 
 
-// Fetch all brands
 export const fetchBrands = async (): Promise<BrandDTO[]> => {
-    return apiClient.get('/api/brands')
+    return apiClient.get('/api/shop/brands')
         .then(response => response.data)
         .catch(error => {
             console.error(error)
@@ -35,9 +32,8 @@ export const fetchBrands = async (): Promise<BrandDTO[]> => {
         });
 };
 
-// Fetch all sizes
 export const fetchSizes = async (): Promise<SizeDTO[]> => {
-    return apiClient.get('/api/sizes')
+    return apiClient.get('/api/shop/sizes')
         .then(response => response.data)
         .catch(error => {
             console.error(error)

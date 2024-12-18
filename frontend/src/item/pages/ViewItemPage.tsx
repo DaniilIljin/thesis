@@ -8,42 +8,53 @@ import {
     Button,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
+import {useParams} from "react-router-dom";
+import {ItemDTO} from "../dto.ts";
+import {useQuery} from "@tanstack/react-query";
+import {fetchItemById} from "../api.ts";
+
 
 const ViewItemPage = () => {
-    const item = {
-        name: "Example Item",
-        price: "$99.99",
-        category: "Electronics",
-        description:
-            "This is a detailed description of the item. It provides information about the features and benefits of the product.",
-        sellerName: "John Doe",
-        images: [
-            "https://via.placeholder.com/600x400?text=Image+1",
-            "https://via.placeholder.com/600x400?text=Image+2",
-            "https://via.placeholder.com/600x400?text=Image+3",
-        ],
-    };
+
+    const { id } = useParams<{ id: string }>();
+
+    const { data: item, isLoading, error } = useQuery<ItemDTO>({
+        queryKey: ['item', id],
+        queryFn: () => fetchItemById(id!),
+        enabled: Boolean(id)
+    });
+
+
+    if (!id) {
+        return <Typography variant="h4" color="inherit">Invalid Item ID</Typography>;
+    }
+
+    if (isLoading) return <div>Loading...</div>;
+
+    if (error instanceof Error)
+        return <div>Error: {error.message}</div>;
+
+    if (!item) return <Typography variant="h4" color="inherit">No item found</Typography>;
 
     return (
         <Box sx={{ padding: 4 }}>
             <Grid alignItems="center" container spacing={4}>
                 <Grid item xs={12} md={6}>
                     <Carousel
-                        autoPlay={false} // Disables automatic sliding
-                        // indicators={true} // Optional: Display indicators
-                        navButtonsAlwaysVisible={true} // Optional: Always show navigation buttons
+                        autoPlay={false}
+                        navButtonsAlwaysVisible={true}
                     >
-                        {item.images.map((image, index) => (
+                        {item.pictures.map((image, index) => (
                             <CardMedia
                                 key={index}
                                 component="img"
-                                image={image}
-                                alt={`Image ${index + 1}`}
+                                // image={image}
+                                alt={`Image ${image.id}`}
                                 sx={{
                                     height: "auto",
                                     objectFit: "cover",
-                                    borderRadius: 1, // Applies rounded corners
-                                    overflow: "hidden", // Ensures image stays within rounded corners
+                                    borderRadius: 1,
+                                    overflow: "hidden",
                                 }}
                             />
                         ))}
@@ -60,17 +71,28 @@ const ViewItemPage = () => {
                                 color="textSecondary"
                                 gutterBottom
                             >
-                                {item.price}
+                                {item.price}€
                             </Typography>
                             <Typography
-                                variant="subtitle1"
+                                variant="body2"
                                 color="textSecondary"
                                 gutterBottom
                             >
-                                Category: {item.category}
+                                Category: {item.category.name}
                             </Typography>
-                            <Typography variant="body1" paragraph>
-                                {item.description}
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                gutterBottom
+                            >
+                                Category: {item.brand.name}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                gutterBottom
+                            >
+                                Category: {item.size.name}
                             </Typography>
                             <Typography
                                 variant="body2"
@@ -79,6 +101,10 @@ const ViewItemPage = () => {
                             >
                                 Seller: {item.sellerName}
                             </Typography>
+                            <Typography variant="body1" paragraph>
+                                {item.description}
+                            </Typography>
+
                             <Box sx={{ display: "flex", gap: 2 }}>
                                 <Button variant="contained" color="primary">
                                     Like

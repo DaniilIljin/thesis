@@ -7,9 +7,8 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('jwtToken');
-        if (token && config.url !== '/login' && config.url !== '/register') {
+        if (config.url && !['/login', '/register'].includes(config.url) && !config.url.startsWith('api/shop/')) {
             config.headers.Authorization = `Bearer ${token}`;
-            console.log(token)
         }
         return config;
     },
@@ -20,11 +19,11 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        return response;
+    },
     (error) => {
-        if (error.response && error.response.status === 401) {
-            localStorage.removeItem('jwtToken');
-        }
+        console.log(error)
         return Promise.reject(error);
     }
 );

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
     AppBar,
     Toolbar,
@@ -5,50 +6,37 @@ import {
     Box,
     Switch,
     Link,
+    IconButton,
+    Drawer, Tooltip,
 } from "@mui/material";
-import {Link as RouterLink} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthProvider.tsx";
+import MenuIcon from "@mui/icons-material/Menu";
 
 type Props = {
-    themeMode: boolean,
-    toggleThemeMode: () => void
-}
+    themeMode: boolean;
+    toggleThemeMode: () => void;
+};
 
-const Header = (props: Props) => {
+const Header = ({ themeMode, toggleThemeMode }: Props) => {
+    const { isAuthorized, loggedOut } = useAuth();
+    const navigate = useNavigate();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
-    // const navigate = useNavigate();
+    const handleLogout = () => {
+        loggedOut();
+        navigate("/");
+    };
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
-        setIsAuthenticated(!!token)
-    }, []);
-
-    // const handleLogout = () => {
-    //     localStorage.removeItem("jwtToken"); // Remove token
-    //     setIsAuthenticated(false); // Update state
-    //     navigate("/login"); // Redirect to login page
-    // };
+    const toggleDrawer = (open: boolean) => setDrawerOpen(open);
 
     const authLinks = (
         <>
-            <Typography>
-                <Link
-                    component={RouterLink}
-                    color="inherit"
-                    underline="none"
-                    to={"/signup"}
-                >
-                    log out
+            <Typography >
+                <Link p={2} to="#" color="inherit" underline="none" component={RouterLink} onClick={handleLogout}>
+                    logout
                 </Link>
-                <span> | </span>
-                <Link
-                    component={RouterLink}
-                    color="inherit"
-                    underline="none"
-                    to={"/login"}
-                >
+                <Link p={2} color="inherit" underline="none" component={RouterLink} to='#'>
                     profile
                 </Link>
             </Typography>
@@ -57,63 +45,60 @@ const Header = (props: Props) => {
 
     const guestLinks = (
         <>
-            <Typography>
-                <Link
-                    component={RouterLink}
-                    color="inherit"
-                    underline="none"
-                    to={"/login"}
-                >
-                    log out
+            <Typography >
+                <Link p={2} color="inherit" underline="none" component={RouterLink} to="/signup">
+                    signup
                 </Link>
-                <span> | </span>
-                <Link
-                    component={RouterLink}
-                    color="inherit"
-                    underline="none"
-                    to={"/login"}
-                >
-                    profile
+                <Link p={2} color="inherit" underline="none" component={RouterLink} to="/login">
+                    login
                 </Link>
             </Typography>
         </>
     );
 
-
     return (
-        <AppBar elevation={5}
-            position="static"
-            sx={{
-                borderRadius: 1,
-                overflow: "hidden",
-            }}
-        >
-            <Toolbar>
-                <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    <Link
-                        component={RouterLink}
+        <>
+            <AppBar sx={{ borderRadius: 2 }} position="static">
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        <Tooltip title="Home page">
+                        <Link component={RouterLink} color="inherit" underline="none" to={"/"}>
+                            Selling Platform
+                        </Link>
+                        </Tooltip>
+                    </Typography>
+
+                    <IconButton
+                        edge="start"
                         color="inherit"
-                        underline="none"
-                        to={"/"}
+                        aria-label="menu"
+                        sx={{ display: { xs: "block", sm: "none" } }}
+                        onClick={() => toggleDrawer(true)}
                     >
-                        selling platform
-                    </Link>
-                </Typography>
-                {isAuthenticated ? guestLinks : authLinks}
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
+                        <MenuIcon />
+                    </IconButton>
+
+                    <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+                        {isAuthorized ? authLinks : guestLinks}
+                    </Box>
+
                     <Switch
-                        checked={props.themeMode}
-                        onChange={props.toggleThemeMode}
+                        sx={{ display: { xs: "none", sm: "flex" } }}
+                        checked={themeMode}
+                        onChange={toggleThemeMode}
                         color="primary"
                     />
+                </Toolbar>
+            </AppBar>
+
+            {/* Drawer for mobile */}
+            <Drawer anchor="top" open={drawerOpen} onClose={() => toggleDrawer(false)}>
+                <Box sx={{ padding: 2 }}>
+                    {isAuthorized ? authLinks : guestLinks}
                 </Box>
-            </Toolbar>
-        </AppBar>
+                <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
+            </Drawer>
+        </>
     );
 };
 

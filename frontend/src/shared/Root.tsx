@@ -1,11 +1,14 @@
-import { Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import BasePage from "./pages/BasePage.tsx";
+import {AuthProvider} from "../AuthProvider.tsx";
 
 const Root = () => {
     return (
-        <BasePage>
-            <Outlet />
-        </BasePage>
+        <AuthProvider>
+            <BasePage>
+                <Outlet/>
+            </BasePage>
+        </AuthProvider>
     );
 };
 
