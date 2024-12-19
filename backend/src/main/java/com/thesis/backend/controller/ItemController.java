@@ -1,5 +1,6 @@
 package com.thesis.backend.controller;
 
+import com.thesis.backend.dto.ItemIdDTO;
 import com.thesis.backend.dto.item.ItemAddDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
@@ -17,6 +18,17 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+
+    @PostMapping("/favorite")
+    public void addFavorite(@RequestBody ItemIdDTO itemId) {
+        itemService.toggleFavorite(itemId.getItemId());
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<ItemDTO>> getFavorites() {
+        List<ItemDTO> items = itemService.getAllUserFavorites();
+        return ResponseEntity.ok(items);
+    }
 
     @GetMapping
     public ResponseEntity<List<ItemDTO>> getAllUserItems() {

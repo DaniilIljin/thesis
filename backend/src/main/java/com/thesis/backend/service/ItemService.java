@@ -7,6 +7,7 @@ import com.thesis.backend.mapper.ItemMapper;
 import com.thesis.backend.mapper.MainMapper;
 import com.thesis.backend.model.Category;
 import com.thesis.backend.model.Item;
+import com.thesis.backend.model.LikedItem;
 import com.thesis.backend.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,8 +73,6 @@ public class ItemService {
             Category category = unitOfWork.getCategoryRepository()
                     .findById(itemAddDTO.getCategoryId()).get();
 
-            String categoryName = category.getName();
-
             item.setCategory(category);
         } else {
             throw new IllegalArgumentException("Category ID is required.");
@@ -87,5 +87,30 @@ public class ItemService {
         }
 
         return itemMapper.toItemViewDTO(unitOfWork.getItemRepository().save(item));
+    }
+
+    public void toggleFavorite(Long itemId) {
+        User user = getUser();
+        Optional<Item> item = unitOfWork.getItemRepository().findById(itemId);
+        if (item.isPresent()){
+            LikedItem likedItem = unitOfWork.getLikedItemRepository().findByItemIdAndBuyerId(itemId, user.getId());
+            if (likedItem != null){
+                unitOfWork.getLikedItemRepository().delete(likedItem);
+            } else {
+                LikedItem newLikedItem = new LikedItem();
+                newLikedItem.setItem(item.get());
+                newLikedItem.setBuyer(user);
+                unitOfWork.getLikedItemRepository().save(newLikedItem);
+            }
+        } else {
+            throw new IllegalArgumentException("Item not found.");
+        }
+    }
+
+    public List<ItemDTO> getAllUserFavorites() {
+        User user = getUser();
+        List<Item> likedItems = unitOfWork.getLikedItemRepository().findLikedItemsByUserId(user.getId());
+        return likedItems.stream()
+                .map(mapper::toItemDTO).toList();
     }
 }
