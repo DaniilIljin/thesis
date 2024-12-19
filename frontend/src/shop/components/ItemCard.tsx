@@ -12,6 +12,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {ItemDTO} from "../dto.ts";
+import {useAuth} from "../../AuthProvider.tsx";
+import {postFavoriteItem} from "../api.ts";
 
 type Props = {
     item: ItemDTO;
@@ -20,6 +22,7 @@ type Props = {
 const ItemCard = (props: Props) => {
     const navigate = useNavigate();
     const [isToggled, setIsToggled] = useState(false);
+    const {isAuthorized} = useAuth()
 
     const handleClick = () => {
         if (props.item?.id) {
@@ -30,6 +33,7 @@ const ItemCard = (props: Props) => {
     };
 
     const handleToggle = () => {
+        postFavoriteItem(props.item.id);
         setIsToggled((prev) => !prev);
     };
     return (
@@ -67,7 +71,7 @@ const ItemCard = (props: Props) => {
                         {props.item.price}€
                     </Typography>
                 </CardContent>
-                <Box
+                {isAuthorized && <Box
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -84,7 +88,7 @@ const ItemCard = (props: Props) => {
                     <IconButton color="primary">
                         <ShoppingCartIcon />
                     </IconButton>
-                </Box>
+                </Box>}
             </Card>
         </>
     );

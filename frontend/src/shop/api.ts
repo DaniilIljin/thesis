@@ -40,3 +40,13 @@ export const fetchSizes = async (): Promise<SizeDTO[]> => {
             throw new Error('Failed to fetch sizes');
         });
 };
+
+export const postFavoriteItem = async (itemId: number): Promise<void> => {
+    return apiClient.post(`/api/items/favorite`, { itemId: itemId })
+        .then(() => {
+            console.log('Item successfully added to favorites');
+        })
+        .catch(error => {
+            throw new Error('Failed to favorite item');
+        });
+};
