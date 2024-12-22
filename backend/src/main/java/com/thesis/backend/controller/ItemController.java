@@ -21,7 +21,7 @@ public class ItemController {
 
     @PostMapping("/favorite")
     public void addFavorite(@RequestBody ItemIdDTO itemId) {
-        itemService.toggleFavorite(itemId.getItemId());
+        itemService.toggleFavorite(itemId.getId());
     }
 
     @GetMapping("/favorites")
@@ -30,7 +30,13 @@ public class ItemController {
         return ResponseEntity.ok(items);
     }
 
-    @GetMapping
+    @GetMapping("/favoriteIds")
+    public ResponseEntity<List<Long>> getFavoritesIds() {
+        List<Long> itemsIds = itemService.getAllUserFavoritesIds();
+        return ResponseEntity.ok(itemsIds);
+    }
+
+    @GetMapping     
     public ResponseEntity<List<ItemDTO>> getAllUserItems() {
         List<ItemDTO> items = itemService.getAllUserItems();
         return ResponseEntity.ok(items);

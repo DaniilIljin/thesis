@@ -1,13 +1,16 @@
 import {Outlet} from "react-router-dom";
 import BasePage from "./pages/BasePage.tsx";
-import {AuthProvider} from "../AuthProvider.tsx";
+import {AuthProvider} from "../context/AuthProvider.tsx";
+import {FavoriteIdsProvider} from "../context/FavoriteIdsContext.tsx";
 
 const Root = () => {
     return (
         <AuthProvider>
-            <BasePage>
-                <Outlet/>
-            </BasePage>
+            <FavoriteIdsProvider>
+                <BasePage>
+                    <Outlet/>
+                </BasePage>
+            </FavoriteIdsProvider>
         </AuthProvider>
     );
 };

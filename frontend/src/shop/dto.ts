@@ -6,7 +6,7 @@ export type BrandDTO = {
 export type CategoryDTO = {
     id: number;
     name: string;
-    subcategories: CategoryDTO[];
+    subCategories: CategoryDTO[];
 };
 
 export type SizeDTO = {

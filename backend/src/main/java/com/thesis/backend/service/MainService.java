@@ -3,8 +3,10 @@ package com.thesis.backend.service;
 import com.thesis.backend.dto.BrandDTO;
 import com.thesis.backend.dto.SizeDTO;
 import com.thesis.backend.dto.shop.CategoryDTO;
+import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class MainService {
     }
 
     public List<CategoryDTO> getAllCategories() {
-        return unitOfWork.getCategoryRepository().findAll().stream()
+        return unitOfWork.getCategoryRepository().findAllTopCategories().stream()
                 .map(mapper::toCategoryDTO).toList();
     }
 
@@ -36,5 +38,20 @@ public class MainService {
     public List<SizeDTO> getAllSizes() {
         return unitOfWork.getSizeRepository().findAll().stream()
                 .map(mapper::toSizeDTO).toList();
+    }
+
+    public List<ItemDTO> getSortedItems(Long categoryId, Long brandId, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "price");
+        if (brandId != null) {
+            return unitOfWork.getItemRepository().findByBrandId(brandId, sort).stream()
+                    .map(mapper::toItemDTO).toList();
+        }
+        if (categoryId != null) {
+            return unitOfWork.getItemRepository().findByCategoryId(categoryId, sort).stream()
+                    .map(mapper::toItemDTO).toList();
+        }
+
+        return unitOfWork.getItemRepository().findAll(sort).stream()
+                .map(mapper::toItemDTO).toList();
     }
 }

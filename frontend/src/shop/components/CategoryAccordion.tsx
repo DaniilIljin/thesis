@@ -1,26 +1,23 @@
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Divider, Typography } from "@mui/material";
-import { useState } from "react";
-import {CategoryDTO} from "../dto.ts";
+import {Box, Divider, Typography} from "@mui/material";
+import {useState} from "react";
+import {useFilterContext} from "../../context/FilterContext.tsx";
 
-type Props = {
-    category: CategoryDTO;
-};
-
-const CategoryAccordion: React.FC<Props> = ({ category }) => {
+const CategoryAccordion = ({category}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const {setCategoryId} = useFilterContext();
 
     const toggleOpen = () => {
-        if (category.subcategories && category.subcategories.length > 0) {
+        if (category.subCategories && category.subCategories.length > 0) {
             setIsOpen(!isOpen);
         }
     };
 
+
     return (
         <Box my={1}>
             <Box
-                onClick={toggleOpen}
                 sx={{
                     cursor: "pointer",
                     display: "flex",
@@ -28,26 +25,31 @@ const CategoryAccordion: React.FC<Props> = ({ category }) => {
                     fontSize: "16px",
                 }}
             >
-                <Typography>{category.name}</Typography>
-                {category.subcategories &&
-                    category.subcategories.length > 0 &&
+                <Typography
+                    onClick={() => setCategoryId(category.id)}
+                >{category.name}</Typography>
+                {category.subCategories &&
+                    category.subCategories.length > 0 &&
                     (isOpen ? (
-                        <ExpandLessIcon fontSize="small" />
+                        <ExpandLessIcon onClick={toggleOpen}
+                                        fontSize="small"/>
+
                     ) : (
-                        <ExpandMoreIcon fontSize="small" />
+                        <ExpandMoreIcon onClick={toggleOpen}
+                                        fontSize="small"/>
                     ))}
             </Box>
             {isOpen &&
-                category.subcategories &&
-                category.subcategories.length > 0 && (
+                category.subCategories &&
+                category.subCategories.length > 0 && (
                     <>
-                        <Divider />
+                        <Divider/>
                         <Box fontSize={14} pl={1}>
-                            {category.subcategories.map((sub, index) => (
-                                <CategoryAccordion key={index} category={sub} />
+                            {category.subCategories.map((sub, index) => (
+                                <CategoryAccordion key={index} category={sub}/>
                             ))}
                         </Box>
-                        <Divider />
+                        <Divider/>
                     </>
                 )}
         </Box>

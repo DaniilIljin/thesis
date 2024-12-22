@@ -22,7 +22,7 @@ const UserLikedItems = () => {
             <Grid justifyContent='center' container mt={1} spacing={2}>
                 {data.map((item, index) => (
                     <Grid item xs={10} sm={4} md={3} key={index}>
-                        <ItemCard item={item}/>
+                        <ItemCard item={item} isToggled={true}/>
                     </Grid>
                 ))}
             </Grid>

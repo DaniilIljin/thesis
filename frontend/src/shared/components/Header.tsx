@@ -12,7 +12,7 @@ import {
     ButtonGroup,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthProvider.tsx";
+import { useAuth } from "../../context/AuthProvider.tsx";
 import MenuIcon from "@mui/icons-material/Menu";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FolderIcon from "@mui/icons-material/Folder";
@@ -54,7 +54,6 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
         </ButtonGroup>
     );
 
-    // Guest user links with icons
     const guestLinks = (
         <ButtonGroup>
             <Tooltip title="Sign Up" arrow>
@@ -74,7 +73,6 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
         <>
             <AppBar sx={{ borderRadius: 2 }} position="static">
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    {/* Left: Logo */}
                     <Typography variant="h6" sx={{ fontFamily: 'Cooper Black, sans-serif', fontSize: 'large' }}>
                         <Tooltip title="Home page">
                             <Link component={RouterLink} color="inherit" underline="none" to={"/"}>
@@ -83,7 +81,6 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                         </Tooltip>
                     </Typography>
 
-                    {/* Center: Links only visible if authorized */}
                     {isAuthorized && (
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                             <Tooltip title="My favorites">
@@ -112,7 +109,6 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                         </Box>
                     )}
 
-                    {/* Right: Menu and User Links */}
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <IconButton
                             edge="start"
@@ -124,18 +120,15 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                             <MenuIcon />
                         </IconButton>
 
-                        {/* Centered Button Group for Auth Links */}
                         <Box sx={{ display: { xs: "none", sm: "flex" }, justifyContent: "center", flexGrow: 1 }}>
                             {isAuthorized ? authLinks : guestLinks}
                         </Box>
 
-                        {/* Theme Toggle Switch */}
                         <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
                     </Box>
                 </Toolbar>
             </AppBar>
 
-            {/* Drawer for mobile */}
             <Drawer anchor="top" open={drawerOpen} onClose={() => toggleDrawer(false)}>
                 <Box sx={{ padding: 2 }}>
                     {isAuthorized ? authLinks : guestLinks}

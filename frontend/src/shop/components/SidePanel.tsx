@@ -1,41 +1,40 @@
-import AddIcon from "@mui/icons-material/Add";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FolderIcon from "@mui/icons-material/Folder";
 import SearchIcon from "@mui/icons-material/Search";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
     Box,
-    ButtonGroup,
     Divider,
     IconButton,
     Paper,
-    TextField, Tooltip,
+    TextField,
     Typography,
+    Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import CategoryAccordion from "./CategoryAccordion.tsx";
-import BrandAccordion from "./BrandAccordion.tsx";
-import {useQuery} from "@tanstack/react-query";
-import {BrandDTO, CategoryDTO} from "../dto.ts";
-import {fetchBrands, fetchCategories} from "../api.ts";
+import { useQuery } from "@tanstack/react-query";
+import { BrandDTO, CategoryDTO } from "../dto.ts";
+import { fetchBrands, fetchCategories } from "../api.ts";
+import {useFilterContext} from "../../context/FilterContext.tsx";
 
 const SidePanel = () => {
+
+    const {priceSort, togglePriceSort, setBrandId, resetFilters} = useFilterContext()
+
     const { data: categories, isLoading, error } = useQuery<CategoryDTO[]>({
-        queryKey: ['categories'],
+        queryKey: ["categories"],
         queryFn: fetchCategories,
     });
 
     const { data: brands } = useQuery<BrandDTO[]>({
-        queryKey: ['brands'],
+        queryKey: ["brands"],
         queryFn: fetchBrands,
     });
 
     if (isLoading) return <div>Loading...</div>;
-    if (error instanceof Error)
-        return <div>Error: {error?.name}</div>
+    if (error instanceof Error) return <div>Error: {error?.name}</div>;
 
-    if (!categories) return "No categories"
-    if (!brands) return "No brands"
-
+    if (!categories) return "No categories";
+    if (!brands) return "No brands";
 
     return (
         <>
@@ -43,32 +42,6 @@ const SidePanel = () => {
                 elevation={5}
                 sx={{ padding: 2, bgcolor: "background.paper" }}
             >
-                {/*<Box*/}
-                {/*    sx={{*/}
-                {/*        display: "flex",*/}
-                {/*        alignItems: "center",*/}
-                {/*        justifyContent: "center",*/}
-                {/*        mb: 1,*/}
-                {/*    }}*/}
-                {/*>*/}
-                {/*    <ButtonGroup variant="contained">*/}
-                {/*        <Tooltip title="My favorites">*/}
-                {/*            <IconButton component={Link} to='/myFavorites'>*/}
-                {/*                <FavoriteIcon/>*/}
-                {/*            </IconButton>*/}
-                {/*        </Tooltip>*/}
-                {/*        <Tooltip title="My items" >*/}
-                {/*            <IconButton component={Link} to='/myItems'>*/}
-                {/*                <FolderIcon />*/}
-                {/*            </IconButton>*/}
-                {/*        </Tooltip>*/}
-                {/*        <Tooltip title="Add new item">*/}
-                {/*            <IconButton component={Link} to='/addItem'>*/}
-                {/*                <AddIcon />*/}
-                {/*            </IconButton>*/}
-                {/*        </Tooltip>*/}
-                {/*    </ButtonGroup>*/}
-                {/*</Box>*/}
                 <Box sx={{ mb: 1 }}>
                     <TextField
                         fullWidth
@@ -87,13 +60,45 @@ const SidePanel = () => {
                         }}
                     />
                 </Box>
+
+                <Divider />
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        m: 1,
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        startIcon={
+                            priceSort === "asc" ? (
+                                <ArrowDownwardIcon />
+                            ) : (
+                                <ArrowUpwardIcon />
+                            )
+                        }
+                        onClick={togglePriceSort}
+                        sx={{
+                            textTransform: "none",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                        }}
+                    >
+                        price
+                    </Button>
+                </Box>
+                <Divider />
                 <Box
                     sx={{
                         cursor: "pointer",
                         fontSize: "16px",
                     }}
                 >
-                    <Typography>All</Typography>
+                    <Typography
+                    onClick={() => resetFilters()}
+                    >All</Typography>
                 </Box>
 
                 {categories.map((category, index) => (
@@ -101,7 +106,20 @@ const SidePanel = () => {
                 ))}
                 <Divider />
                 {brands.map((brand, index) => (
-                    <BrandAccordion key={index} brand={brand} />
+                    <Box key={index} my={1}>
+                        <Box
+                            sx={{
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                fontSize: "16px",
+                            }}
+                        >
+                            <Typography
+                                onClick={() => setBrandId(brand.id)}
+                            >{brand.name}</Typography>
+                        </Box>
+                    </Box>
                 ))}
             </Paper>
         </>

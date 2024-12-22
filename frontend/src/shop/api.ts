@@ -4,13 +4,17 @@ import {BrandDTO} from "./dto.ts";
 import {SizeDTO} from "./dto.ts";
 import apiClient from "../shared/Axios.ts";
 
-export const fetchItems = (): Promise<ItemDTO[]> => {
-    return apiClient.get('/api/shop/items')
+export const fetchItems = (
+    categoryId?: number,
+    brandId?: number,
+    sortDirection: 'asc' | 'desc' = 'asc'
+): Promise<ItemDTO[]> => {
+    const params: any = {};
+    if (categoryId) params.categoryId = categoryId;
+    if (brandId) params.brandId = brandId;
+    if (sortDirection) params.sortDirection = sortDirection;
+    return apiClient.get('/api/shop/items',  { params })
         .then(response => response.data)
-        .catch(error => {
-            console.error(error)
-            throw new Error('Failed to fetch items');
-        });
 };
 
 export const fetchCategories = (): Promise<CategoryDTO[]> => {
@@ -42,11 +46,20 @@ export const fetchSizes = async (): Promise<SizeDTO[]> => {
 };
 
 export const postFavoriteItem = async (itemId: number): Promise<void> => {
-    return apiClient.post(`/api/items/favorite`, { itemId: itemId })
+    return apiClient.post(`/api/items/favorite`, { id: itemId })
         .then(() => {
             console.log('Item successfully added to favorites');
         })
         .catch(error => {
             throw new Error('Failed to favorite item');
+        });
+};
+
+export const fetchFavoriteIds = async (): Promise<number[]> => {
+    return apiClient.get('/api/items/favoriteIds')
+        .then(response => response.data)
+        .catch(error => {
+            console.error(error);
+            throw new Error('Failed to fetch favorite item IDs');
         });
 };

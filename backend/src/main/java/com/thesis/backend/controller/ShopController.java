@@ -9,10 +9,7 @@ import com.thesis.backend.service.ItemService;
 import com.thesis.backend.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,16 @@ public class ShopController {
     private final ItemService itemService;
 
     @GetMapping("/items")
+    public ResponseEntity<List<ItemDTO>>  getItemsByCategory(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long brandId,
+            @RequestParam(defaultValue = "asc") String sortDirection
+    ) {
+        List<ItemDTO> items = mainService.getSortedItems(categoryId, brandId, sortDirection);
+        return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/itemss")
     public ResponseEntity<List<ItemDTO>> getAllItems() {
         List<ItemDTO> items = mainService.getAllItems();
         return ResponseEntity.ok(items);

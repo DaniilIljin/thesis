@@ -2,12 +2,14 @@ import { Box, Button, TextField, Typography, Paper, useTheme } from "@mui/materi
 import { useState } from "react";
 import { register, login } from "../api.ts";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthProvider.tsx";
+import { useAuth } from "../../context/AuthProvider.tsx";
+import { useQueryClient} from "@tanstack/react-query";
 
 const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
     const theme = useTheme();
     const navigate = useNavigate();
     const { loggedIn } = useAuth();
+    const queryClient = useQueryClient()
 
     const [formData, setFormData] = useState({
         username: '',
@@ -28,6 +30,8 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             const response = await action(formData);
             loggedIn(response.token);
             console.log(isRegister ? 'Registration success:' : 'Login success:', response);
+            queryClient.invalidateQueries(['items']);
+            queryClient.invalidateQueries(['favoritemIds']);
             navigate('/');
         } catch (error) {
             alert(isRegister ? 'Registration failed' : 'Login failed');

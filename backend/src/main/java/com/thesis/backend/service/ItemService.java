@@ -113,4 +113,9 @@ public class ItemService {
         return likedItems.stream()
                 .map(mapper::toItemDTO).toList();
     }
+
+    public List<Long> getAllUserFavoritesIds() {
+        User user = getUser();
+        return unitOfWork.getLikedItemRepository().findLikedItemsIdsByUserId(user.getId());
+    }
 }

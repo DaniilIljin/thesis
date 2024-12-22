@@ -17,4 +17,7 @@ public interface LikedItemRepository extends JpaRepository<LikedItem, Long> {
 
     @Query("SELECT li.item FROM LikedItem li WHERE li.buyer.id = :userId")
     List<Item> findLikedItemsByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT li.item.id FROM LikedItem li WHERE li.buyer.id = :userId")
+    List<Long> findLikedItemsIdsByUserId(@Param("userId") Long userId);
 }

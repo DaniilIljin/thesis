@@ -4,25 +4,40 @@ import {
     CardContent,
     Typography,
     Box,
-    IconButton, Tooltip,
+    IconButton,
+    Tooltip,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteSharpIcon from "@mui/icons-material/FavoriteSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {ItemDTO} from "../dto.ts";
-import {useAuth} from "../../AuthProvider.tsx";
-import {postFavoriteItem} from "../api.ts";
+import { ItemDTO } from "../dto.ts";
+import { useAuth } from "../../context/AuthProvider.tsx";
+import { postFavoriteItem } from "../api.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 type Props = {
     item: ItemDTO;
+    isToggled?: boolean;
 };
 
 const ItemCard = (props: Props) => {
     const navigate = useNavigate();
-    const [isToggled, setIsToggled] = useState(false);
-    const {isAuthorized} = useAuth()
+    const queryClient = useQueryClient();
+    const { isAuthorized } = useAuth();
+
+    const [isToggled, setIsToggled] = useState(props.isToggled || false);
+
+    const mutation = useMutation({
+        mutationFn: () => postFavoriteItem(props.item.id),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['favoritemIds']);
+        },
+        onError: (error) => {
+            console.error('Failed to toggle favorite item:', error);
+        },
+    });
 
     const handleClick = () => {
         if (props.item?.id) {
@@ -33,9 +48,10 @@ const ItemCard = (props: Props) => {
     };
 
     const handleToggle = () => {
-        postFavoriteItem(props.item.id);
+        mutation.mutate();
         setIsToggled((prev) => !prev);
     };
+
     return (
         <>
             <Card elevation={5}>
@@ -71,24 +87,26 @@ const ItemCard = (props: Props) => {
                         {props.item.price}€
                     </Typography>
                 </CardContent>
-                {isAuthorized && <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        p: 1,
-                    }}
-                >
-                    <IconButton onClick={handleToggle} color="primary">
-                        {isToggled ? (
-                            <FavoriteSharpIcon />
-                        ) : (
-                            <FavoriteBorderIcon />
-                        )}
-                    </IconButton>
-                    <IconButton color="primary">
-                        <ShoppingCartIcon />
-                    </IconButton>
-                </Box>}
+                {isAuthorized && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            p: 1,
+                        }}
+                    >
+                        <IconButton onClick={handleToggle} color="primary">
+                            {isToggled ? (
+                                <FavoriteSharpIcon />
+                            ) : (
+                                <FavoriteBorderIcon />
+                            )}
+                        </IconButton>
+                        <IconButton color="primary">
+                            <ShoppingCartIcon />
+                        </IconButton>
+                    </Box>
+                )}
             </Card>
         </>
     );
