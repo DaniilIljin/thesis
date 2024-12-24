@@ -19,5 +19,6 @@ export type ItemDTO = {
     name: string;
     price: number;
     sizeName: string;
+    brandName: string;
     firstPictureUrl: string;
 };

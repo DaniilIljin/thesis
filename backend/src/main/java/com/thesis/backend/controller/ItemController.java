@@ -1,6 +1,7 @@
 package com.thesis.backend.controller;
 
 import com.thesis.backend.dto.ItemIdDTO;
+import com.thesis.backend.dto.UserDTO;
 import com.thesis.backend.dto.item.ItemAddDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
@@ -53,4 +54,9 @@ public class ItemController {
         itemService.deleteUserItem(id);
     }
 
+    @GetMapping("/contact/{id}")
+    public ResponseEntity<UserDTO> getSellerInfo(@PathVariable Long id) {
+        UserDTO user = itemService.getUserContacts(id);
+        return ResponseEntity.ok(user);
+    }
 }

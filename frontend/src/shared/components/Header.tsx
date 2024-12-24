@@ -71,7 +71,7 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
 
     return (
         <>
-            <AppBar sx={{ borderRadius: 2 }} position="static">
+            <AppBar sx={{ borderRadius: 2, mt: 1 }} position="static">
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h6" sx={{ fontFamily: 'Cooper Black, sans-serif', fontSize: 'large' }}>
                         <Tooltip title="Home page">
@@ -124,7 +124,9 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                             {isAuthorized ? authLinks : guestLinks}
                         </Box>
 
-                        <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
+                        <Tooltip title={"Switch theme"}>
+                            <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
+                        </Tooltip>
                     </Box>
                 </Toolbar>
             </AppBar>

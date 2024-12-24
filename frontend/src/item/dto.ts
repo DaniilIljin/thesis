@@ -39,3 +39,9 @@ export interface ItemAddDTO {
     price: number;
     images?: string[];
 }
+
+export type UserDTO = {
+    fullName: string;
+    phone: string;
+    email: string;
+};

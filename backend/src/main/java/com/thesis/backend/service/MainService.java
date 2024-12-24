@@ -40,7 +40,7 @@ public class MainService {
                 .map(mapper::toSizeDTO).toList();
     }
 
-    public List<ItemDTO> getSortedItems(Long categoryId, Long brandId, String sortDirection) {
+    public List<ItemDTO> getSortedItems(Long categoryId, Long brandId, String sortDirection, String searchQuery) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "price");
         if (brandId != null) {
             return unitOfWork.getItemRepository().findByBrandId(brandId, sort).stream()
@@ -48,6 +48,11 @@ public class MainService {
         }
         if (categoryId != null) {
             return unitOfWork.getItemRepository().findByCategoryId(categoryId, sort).stream()
+                    .map(mapper::toItemDTO).toList();
+        }
+
+        if (searchQuery != null) {
+            return unitOfWork.getItemRepository().findByNameOrBrandNameOrCategoryNameOrSizeName(searchQuery, sort).stream()
                     .map(mapper::toItemDTO).toList();
         }
 

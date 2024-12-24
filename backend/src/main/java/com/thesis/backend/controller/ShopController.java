@@ -26,17 +26,13 @@ public class ShopController {
     public ResponseEntity<List<ItemDTO>>  getItemsByCategory(
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long brandId,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) String searchQuery
     ) {
-        List<ItemDTO> items = mainService.getSortedItems(categoryId, brandId, sortDirection);
+        List<ItemDTO> items = mainService.getSortedItems(categoryId, brandId, sortDirection, searchQuery);
         return ResponseEntity.ok(items);
     }
 
-    @GetMapping("/itemss")
-    public ResponseEntity<List<ItemDTO>> getAllItems() {
-        List<ItemDTO> items = mainService.getAllItems();
-        return ResponseEntity.ok(items);
-    }
 
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {

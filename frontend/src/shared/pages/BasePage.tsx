@@ -1,4 +1,4 @@
-import { Container, ThemeProvider } from "@mui/material";
+import {Container, CssBaseline, ThemeProvider} from "@mui/material";
 import Background from "../components/Background.tsx";
 import Header from "../components/Header.tsx";
 import React, { useState } from "react";
@@ -11,6 +11,7 @@ type BasePageProps = {
 const BasePage: React.FC<BasePageProps> = ({ children }) => {
     const [themeMode, setThemeMode] = useState(false);
 
+
     const toggleThemeMode = () => {
         console.log(`Current mode: ${themeMode ? "dark" : "light"}`); // Debugging: Check current mode
         setThemeMode(prevMode => {
@@ -22,14 +23,13 @@ const BasePage: React.FC<BasePageProps> = ({ children }) => {
     return (
         <>
             <ThemeProvider theme={themeMode ? theme1 : theme2}>
-                <Background />
+                <CssBaseline />
+                <Background>
                 <Container>
-                    <Header
-                        themeMode={themeMode}
-                        toggleThemeMode={toggleThemeMode}
-                    />
+                    <Header themeMode={themeMode} toggleThemeMode={toggleThemeMode}/>
                     {children}
                 </Container>
+                </Background>
             </ThemeProvider>
         </>
     );

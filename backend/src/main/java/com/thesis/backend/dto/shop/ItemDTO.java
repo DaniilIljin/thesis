@@ -9,5 +9,6 @@ public class ItemDTO {
     private String name;
     private BigDecimal price;
     private String sizeName;
+    private String brandName;
     private String pictureUrl;
 }

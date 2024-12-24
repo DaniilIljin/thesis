@@ -7,12 +7,14 @@ import apiClient from "../shared/Axios.ts";
 export const fetchItems = (
     categoryId?: number,
     brandId?: number,
-    sortDirection: 'asc' | 'desc' = 'asc'
+    sortDirection: 'asc' | 'desc' = 'asc',
+    searchQuery:string = ""
 ): Promise<ItemDTO[]> => {
     const params: any = {};
     if (categoryId) params.categoryId = categoryId;
     if (brandId) params.brandId = brandId;
     if (sortDirection) params.sortDirection = sortDirection;
+    if (searchQuery != "") params.searchQuery = searchQuery;
     return apiClient.get('/api/shop/items',  { params })
         .then(response => response.data)
 };

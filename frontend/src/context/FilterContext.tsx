@@ -7,7 +7,9 @@ type FilterContextType = {
     setCategoryId: (categoryId: number) => void;
     setBrandId: (brandId: number) => void;
     togglePriceSort: () => void;
-    resetFilters: () => void;
+    resetParams: () => void;
+    setSearch: (query: string) => void;
+    searchQuery: string
 };
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -20,24 +22,32 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
     const [brandId, setBrandId] = useState<number | undefined>(undefined);
     const [priceSort, setPriceSort] = useState<"asc" | "desc">("asc");
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const resetParams = () => {
+        setSearchQuery("");
+        setBrandId(undefined)
+        setCategoryId(undefined)
+    }
 
     const handleCategoryClick = (categoryId: number) => {
+        resetParams()
         setCategoryId(categoryId);
-        setBrandId(undefined);
     };
 
     const handleBrandClick = (brandId: number) => {
+        resetParams()
         setBrandId(brandId);
-        setCategoryId(undefined);
+    };
+
+    const setSearch = (query: string) => {
+        resetParams()
+        setSearchQuery(query);
+        console.log(searchQuery);
     };
 
     const togglePriceSort = () => {
         setPriceSort((prev) => (prev === "asc" ? "desc" : "asc")); // Toggle price sort
-    };
-
-    const resetFilters = () => {
-        setCategoryId(undefined);
-        setBrandId(undefined);
     };
 
     return (
@@ -46,10 +56,12 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
                 categoryId,
                 brandId,
                 priceSort,
+                searchQuery,
                 setCategoryId: handleCategoryClick,
                 setBrandId: handleBrandClick,
                 togglePriceSort,
-                resetFilters,
+                resetParams,
+                setSearch
             }}
         >
             {children}

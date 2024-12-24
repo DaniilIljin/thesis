@@ -1,22 +1,23 @@
 import apiClient from "../shared/Axios.ts";
-import {ItemDTO, BrandDTO, CategoryDTO, SizeDTO, ItemAddDTO} from "./dto.ts";
+import {ItemDTO, BrandDTO, CategoryDTO, SizeDTO, ItemAddDTO, UserDTO} from "./dto.ts";
+
+export const fetchUserByItemId = (itemId: string): Promise<UserDTO> => {
+    return apiClient.get(`/api/items/contact/${itemId}`)
+        .then(response => {
+            return response.data;
+        })
+};
 
 export const fetchItemById = (id: string): Promise<ItemDTO> => {
     return apiClient.get(`/api/shop/items/${id}`)
         .then(response => {
             return response.data
         })
-        .catch(error => {
-            throw new Error(`Failed to fetch item with ID: ${id}`);
-        });
 };
 
 export const fetchCategories = (): Promise<CategoryDTO[]> => {
     return apiClient.get('/api/shop/categories')
         .then(response => response.data)
-        .catch(error => {
-            throw new Error('Failed to fetch categories');
-        });
 };
 
 

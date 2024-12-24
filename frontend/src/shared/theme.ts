@@ -2,6 +2,16 @@ import { createTheme } from '@mui/material/styles';
 
 // Define the dark theme (theme1)
 export const theme1 = createTheme({
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    margin: 0,
+                    padding: 0,
+                },
+            },
+        },
+    },
     palette: {
         mode: 'dark',
         primary: {

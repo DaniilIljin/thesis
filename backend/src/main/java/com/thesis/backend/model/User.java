@@ -25,6 +25,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String email;
+
+    private String phone;
+
+    private String fullName;
+
     @OneToMany(mappedBy = "seller")
     private List<Item> items;
 

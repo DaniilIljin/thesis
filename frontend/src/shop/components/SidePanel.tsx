@@ -15,10 +15,13 @@ import { useQuery } from "@tanstack/react-query";
 import { BrandDTO, CategoryDTO } from "../dto.ts";
 import { fetchBrands, fetchCategories } from "../api.ts";
 import {useFilterContext} from "../../context/FilterContext.tsx";
+import {useState} from "react";
 
 const SidePanel = () => {
 
-    const {priceSort, togglePriceSort, setBrandId, resetFilters} = useFilterContext()
+    const {priceSort, togglePriceSort, setBrandId, resetParams, setSearch} = useFilterContext()
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
 
     const { data: categories, isLoading, error } = useQuery<CategoryDTO[]>({
         queryKey: ["categories"],
@@ -29,6 +32,7 @@ const SidePanel = () => {
         queryKey: ["brands"],
         queryFn: fetchBrands,
     });
+
 
     if (isLoading) return <div>Loading...</div>;
     if (error instanceof Error) return <div>Error: {error?.name}</div>;
@@ -48,9 +52,14 @@ const SidePanel = () => {
                         variant="outlined"
                         size="small"
                         placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         InputProps={{
                             endAdornment: (
-                                <IconButton edge="end">
+                                <IconButton onClick={() => {
+                                    setSearchQuery("")
+                                    setSearch(searchQuery)
+                                }} edge="end">
                                     <SearchIcon />
                                 </IconButton>
                             ),
@@ -97,7 +106,7 @@ const SidePanel = () => {
                     }}
                 >
                     <Typography
-                    onClick={() => resetFilters()}
+                    onClick={() => resetParams()}
                     >All</Typography>
                 </Box>
 

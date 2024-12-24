@@ -5,25 +5,48 @@ import {
     Card,
     CardContent,
     Typography,
-    Button,
+     IconButton,
 } from "@mui/material";
+
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Carousel from "react-material-ui-carousel";
 import {useParams} from "react-router-dom";
-import {ItemDTO} from "../dto.ts";
+import {ItemDTO, UserDTO} from "../dto.ts";
 import {useQuery} from "@tanstack/react-query";
-import {fetchItemById} from "../api.ts";
+import {fetchItemById, fetchUserByItemId} from "../api.ts";
+import LikeButton from "../../shared/components/LikeButton.tsx";
+import {useFavoriteIds} from "../../hooks/useFaviteIds.tsx";
+import {useAuth} from "../../context/AuthProvider.tsx";
+import {useState} from "react";
+import UserContactModal from "../component/UserContactModal.tsx";
 
 
 const ViewItemPage = () => {
 
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
 
-    const { data: item, isLoading, error } = useQuery<ItemDTO>({
+    const {data: item, isLoading, error} = useQuery<ItemDTO>({
         queryKey: ['item', id],
         queryFn: () => fetchItemById(id!),
         enabled: Boolean(id)
     });
 
+    const {isAuthorized} = useAuth()
+
+    const user = useQuery<UserDTO>({
+        queryKey: ["userByItemId", id],
+        queryFn: () => fetchUserByItemId(id!),
+        enabled: isAuthorized && !!id
+    });
+
+    const {data: favoriteIds} = useFavoriteIds(isAuthorized)
+
+    const [openModal, setOpenModal] = useState(false);
+
+    const toggleModal = () => {
+        console.log('toggled')
+        setOpenModal((prev) => !prev);
+    };
 
     if (!id) {
         return <Typography variant="h4" color="inherit">Invalid Item ID</Typography>;
@@ -37,7 +60,7 @@ const ViewItemPage = () => {
     if (!item) return <Typography variant="h4" color="inherit">No item found</Typography>;
 
     return (
-        <Box sx={{ padding: 4 }}>
+        <Box sx={{padding: 4}}>
             <Grid alignItems="center" container spacing={4}>
                 <Grid item xs={12} md={6}>
                     <Carousel
@@ -61,7 +84,7 @@ const ViewItemPage = () => {
                     </Carousel>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Card sx={{ height: "100%" }}>
+                    <Card sx={{height: "100%"}}>
                         <CardContent>
                             <Typography variant="h4" gutterBottom>
                                 {item.name}
@@ -85,14 +108,14 @@ const ViewItemPage = () => {
                                 color="textSecondary"
                                 gutterBottom
                             >
-                                Category: {item.brand.name}
+                                Brand: {item.brand.name}
                             </Typography>
                             <Typography
                                 variant="body2"
                                 color="textSecondary"
                                 gutterBottom
                             >
-                                Category: {item.size.name}
+                                Size: {item.size.name}
                             </Typography>
                             <Typography
                                 variant="body2"
@@ -105,14 +128,22 @@ const ViewItemPage = () => {
                                 {item.description}
                             </Typography>
 
-                            <Box sx={{ display: "flex", gap: 2 }}>
-                                <Button variant="contained" color="primary">
-                                    Like
-                                </Button>
-                                <Button variant="outlined" color="primary">
-                                    Contact Seller
-                                </Button>
-                            </Box>
+                            {isAuthorized && <Box sx={{
+                                display: "flex", gap: 2, justifyContent: "space-between",
+                            }}>
+                                <LikeButton itemId={id} initialIsToggled={favoriteIds?.includes(id) || false}/>
+                                <IconButton onClick={toggleModal} color="primary">
+                                    <ContactMailIcon />
+                                </IconButton>
+
+                                {user.data && (
+                                    <UserContactModal
+                                        user={user.data}
+                                        open={openModal}
+                                        onClose={toggleModal}
+                                    />
+                                )}
+                            </Box>}
                         </CardContent>
                     </Card>
                 </Grid>

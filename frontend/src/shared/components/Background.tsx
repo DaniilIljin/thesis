@@ -1,20 +1,24 @@
 import { Box } from "@mui/material";
+import { ReactNode } from "react";
 
-function Background() {
+type BackgroundProps = {
+    children: ReactNode;
+};
+
+function Background({ children }: BackgroundProps) {
     return (
         <Box
             sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100vh",
+                position: "relative",
+                width: "100wh",
+                minHeight: "100vh",
                 backgroundColor: "background.default",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                zIndex: -1,
             }}
-        />
+        >
+            {children}
+        </Box>
     );
 }
 

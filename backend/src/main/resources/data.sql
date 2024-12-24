@@ -1,115 +1,85 @@
 
--- Insert users (one user and one admin)
-INSERT INTO app_user (username, password, role)
-VALUES --- password: password123
-       ('john_doe', '$2a$12$muEb5faSxzEs3kH8BGWzT.ua1RWYn9UozJZTWP9c.diWlrSSOzpdq',
-        'USER'), -- Regular user                         --- password: adminpass123
-       ('admin_user', '$2a$12$oxukuXvpAbRJNMws9BRltO39PtjygvxDz3eVgooK.vUwKnzYweFta', 'ADMIN');
--- Admin user
+INSERT INTO app_user (username, password, role, email, phone, full_name)
+VALUES
+    --- password: password123
+    ('john_doe', '$2a$12$muEb5faSxzEs3kH8BGWzT.ua1RWYn9UozJZTWP9c.diWlrSSOzpdq', 'USER', 'john.doe@example.com', '123-456-7890', 'John Doe'),
+    --- password: adminpass123
+    ('admin_user', '$2a$12$oxukuXvpAbRJNMws9BRltO39PtjygvxDz3eVgooK.vUwKnzYweFta', 'ADMIN', 'admin.user@example.com', '987-654-3210', 'Admin User');
 
-
-
-
-
-
--- Insert sizes
 INSERT INTO size (name)
 VALUES ('Small'),
        ('Medium'),
        ('Large'),
        ('X-Large');
 
--- Insert brands
 INSERT INTO brand (name)
 VALUES ('Nike'),
        ('Adidas'),
        ('Zara'),
        ('H&M');
 
--- Top-level categories
-INSERT INTO category (name, category_id) VALUES ('Men', NULL);
-INSERT INTO category (name, category_id) VALUES ('Women', NULL);
+INSERT INTO category (name, parent_category_id) VALUES ('Men', NULL);
+INSERT INTO category (name, parent_category_id) VALUES ('Women', NULL);
 
--- Subcategories under Women (use the generated category IDs)
-INSERT INTO category (name, category_id) VALUES ('Shirts', 2); -- Women category_id = 2
-INSERT INTO category (name, category_id) VALUES ('Pants', 2);  -- Women category_id = 2
+INSERT INTO category (name, parent_category_id) VALUES ('Shirts', 2);
+INSERT INTO category (name, parent_category_id) VALUES ('Pants', 2);
 
--- Subcategories under Shirts (use the generated category IDs)
-INSERT INTO category (name, category_id) VALUES ('Dresses', 3); -- Shirts category_id = 3
-INSERT INTO category (name, category_id) VALUES ('Skirts', 3);  -- Shirts category_id = 3
+INSERT INTO category (name, parent_category_id) VALUES ('Dresses', 3); -- Shirts parent_category_id = 3
+INSERT INTO category (name, parent_category_id) VALUES ('Skirts', 3);  -- Shirts parent_category_id = 3
 
--- Additional test categories under Men
-INSERT INTO category (name, category_id) VALUES ('Outerwear', 1); -- Men category_id = 1
-INSERT INTO category (name, category_id) VALUES ('Sweaters', 1);  -- Men category_id = 1
+INSERT INTO category (name, parent_category_id) VALUES ('Outerwear', 1); -- Men parent_category_id = 1
+INSERT INTO category (name, parent_category_id) VALUES ('Sweaters', 1);  -- Men parent_category_id = 1
 
--- Subcategories under Men > Sweaters
-INSERT INTO category (name, category_id) VALUES ('Cardigans', 6); -- Sweaters category_id = 6
-INSERT INTO category (name, category_id) VALUES ('Pullovers', 6); -- Sweaters category_id = 6
+INSERT INTO category (name, parent_category_id) VALUES ('Cardigans', 6); -- Sweaters parent_category_id = 6
+INSERT INTO category (name, parent_category_id) VALUES ('Pullovers', 6); -- Sweaters parent_category_id = 6
 
--- Subcategories under Women > Pants
-INSERT INTO category (name, category_id) VALUES ('Jeans', 4);  -- Pants category_id = 4
-INSERT INTO category (name, category_id) VALUES ('Trousers', 4);  -- Pants category_id = 4
+INSERT INTO category (name, parent_category_id) VALUES ('Jeans', 4);  -- Pants parent_category_id = 4
+INSERT INTO category (name, parent_category_id) VALUES ('Trousers', 4);  -- Pants parent_category_id = 4
 
--- Subcategories under Women > Shirts
-INSERT INTO category (name, category_id) VALUES ('Blouses', 5);  -- Shirts category_id = 5
-INSERT INTO category (name, category_id) VALUES ('Tops', 5);  -- Shirts category_id = 5
+INSERT INTO category (name, parent_category_id) VALUES ('Blouses', 5);  -- Shirts parent_category_id = 5
+INSERT INTO category (name, parent_category_id) VALUES ('Tops', 5);  -- Shirts category_id = 5
 
 
--- Insert items for categories (use the generated category IDs)
-
--- Men > Shirts Subcategory (category_id = 4)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (4, 2, 1, 1, 'White Casual Shirt', 'AVAILABLE', 'A comfortable white casual shirt for men.', 29.99, NULL),
        (4, 3, 2, 1, 'Black Formal Shirt', 'AVAILABLE', 'A stylish black formal shirt for men.', 39.99, NULL);
 
--- Men > Pants Subcategory (category_id = 5)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (5, 2, 1, 1, 'Grey Jogger Pants', 'AVAILABLE', 'A pair of grey jogger pants for men.', 45.99, NULL),
        (5, 3, 2, 1, 'Blue Denim Jeans', 'AVAILABLE', 'A pair of classic blue denim jeans for men.', 59.99, NULL);
 
--- Men > Outerwear Subcategory (category_id = 7)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (7, 4, 1, 1, 'Black Leather Jacket', 'AVAILABLE', 'A stylish black leather jacket for men.', 120.99, NULL),
        (7, 2, 2, 1, 'Brown Bomber Jacket', 'AVAILABLE', 'A trendy brown bomber jacket for men.', 85.99, NULL);
 
--- Men > Sweaters Subcategory (category_id = 8)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (8, 3, 1, 1, 'Grey Wool Cardigan', 'AVAILABLE', 'A warm grey wool cardigan for men.', 55.99, NULL),
        (8, 2, 2, 1, 'Blue Pullover Sweater', 'AVAILABLE', 'A cozy blue pullover sweater for men.', 49.99, NULL);
 
--- Women > Shirts Subcategory (category_id = 3)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (3, 2, 1, 1, 'Pink Floral Blouse', 'AVAILABLE', 'A beautiful pink floral blouse for women.', 39.99, NULL),
        (3, 3, 2, 1, 'White Cotton Top', 'AVAILABLE', 'A simple white cotton top for women.', 19.99, NULL);
 
--- Women > Pants Subcategory (category_id = 4)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (4, 2, 1, 1, 'Black Skinny Jeans', 'AVAILABLE', 'Comfortable black skinny jeans for women.', 49.99, NULL),
        (4, 3, 3, 1, 'High-Waisted Blue Trousers', 'AVAILABLE', 'A pair of high-waisted blue trousers for women.', 59.99, NULL);
 
--- Women > Dresses Subcategory (category_id = 6)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (6, 4, 1, 1, 'Black Evening Dress', 'AVAILABLE', 'Elegant black evening dress for women.', 89.99, NULL),
        (6, 3, 2, 1, 'Red Satin Dress', 'AVAILABLE', 'A stunning red satin dress for women.', 119.99, NULL);
 
--- Women > Skirts Subcategory (category_id = 7)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (7, 2, 3, 1, 'Blue Denim Skirt', 'AVAILABLE', 'A classic blue denim skirt for women.', 39.99, NULL),
        (7, 3, 1, 1, 'Black Mini Skirt', 'AVAILABLE', 'A trendy black mini skirt for women.', 29.99, NULL);
 
--- Women > Blouses Subcategory (category_id = 8)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (8, 2, 1, 1, 'White Lace Blouse', 'AVAILABLE', 'An elegant white lace blouse for women.', 49.99, NULL),
        (8, 3, 2, 1, 'Red Satin Blouse', 'AVAILABLE', 'A luxurious red satin blouse for women.', 69.99, NULL);
 
--- Women > Tops Subcategory (category_id = 9)
 INSERT INTO item (category_id, size_id, brand_id, seller_id, name, status, description, price, buyer_id)
 VALUES (9, 4, 1, 1, 'Yellow Crop Top', 'AVAILABLE', 'A cute yellow crop top for women.', 24.99, NULL),
        (9, 2, 2, 1, 'Black Tank Top', 'AVAILABLE', 'A simple black tank top for women.', 14.99, NULL);
 
--- Insert pictures for items
-
--- Insert pictures for Men > Shirts
 INSERT INTO picture (item_id, file_name, file_location)
 VALUES (1, 'white_shirt.jpg', '/images/men_shirts/white_shirt.jpg'),
        (2, 'black_formal_shirt.jpg', '/images/men_shirts/black_formal_shirt.jpg');

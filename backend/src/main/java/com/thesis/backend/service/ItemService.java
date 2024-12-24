@@ -1,5 +1,6 @@
 package com.thesis.backend.service;
 
+import com.thesis.backend.dto.UserDTO;
 import com.thesis.backend.dto.item.ItemAddDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
@@ -117,5 +118,10 @@ public class ItemService {
     public List<Long> getAllUserFavoritesIds() {
         User user = getUser();
         return unitOfWork.getLikedItemRepository().findLikedItemsIdsByUserId(user.getId());
+    }
+
+    public UserDTO getUserContacts (Long itemId){
+        User user = unitOfWork.getItemRepository().findItemUser(itemId);
+        return mapper.toUserDTO(user);
     }
 }

@@ -1,13 +1,11 @@
 package com.thesis.backend.mapper;
 
 import com.thesis.backend.dto.BrandDTO;
+import com.thesis.backend.dto.SizeDTO;
+import com.thesis.backend.dto.UserDTO;
 import com.thesis.backend.dto.shop.CategoryDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
-import com.thesis.backend.dto.SizeDTO;
-import com.thesis.backend.model.Brand;
-import com.thesis.backend.model.Category;
-import com.thesis.backend.model.Item;
-import com.thesis.backend.model.Size;
+import com.thesis.backend.model.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -17,6 +15,10 @@ import org.springframework.stereotype.Component;
 public class MainMapper {
 
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public UserDTO toUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
+    }
 
     public BrandDTO toBrandDTO(Brand brand) {
         return modelMapper.map(brand, BrandDTO.class);

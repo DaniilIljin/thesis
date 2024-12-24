@@ -31,7 +31,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             loggedIn(response.token);
             console.log(isRegister ? 'Registration success:' : 'Login success:', response);
             queryClient.invalidateQueries(['items']);
-            queryClient.invalidateQueries(['favoritemIds']);
+            queryClient.invalidateQueries(['favoriteItemIds']);
             navigate('/');
         } catch (error) {
             alert(isRegister ? 'Registration failed' : 'Login failed');
