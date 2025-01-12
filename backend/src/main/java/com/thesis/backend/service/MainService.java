@@ -2,6 +2,7 @@ package com.thesis.backend.service;
 
 import com.thesis.backend.dto.BrandDTO;
 import com.thesis.backend.dto.SizeDTO;
+import com.thesis.backend.dto.item.CategoryViewDTO;
 import com.thesis.backend.dto.shop.CategoryDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.mapper.MainMapper;
@@ -25,7 +26,7 @@ public class MainService {
                 .map(mapper::toItemDTO).toList();
     }
 
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryDTO> getAllCategoriesTree() {
         return unitOfWork.getCategoryRepository().findAllTopCategories().stream()
                 .map(mapper::toCategoryDTO).toList();
     }
@@ -58,5 +59,10 @@ public class MainService {
 
         return unitOfWork.getItemRepository().findAll(sort).stream()
                 .map(mapper::toItemDTO).toList();
+    }
+
+    public List<CategoryViewDTO> getAllCategories() {
+        return unitOfWork.getCategoryRepository().findAll().stream()
+                .map(mapper::toCategoryViewDTO).toList();
     }
 }

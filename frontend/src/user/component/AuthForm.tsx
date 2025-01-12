@@ -1,8 +1,8 @@
 import { Box, Button, TextField, Typography, Paper, useTheme } from "@mui/material";
 import { useState } from "react";
-import { register, login } from "../api.ts";
+import { register, login } from "../../api/auth.ts";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import { useQueryClient} from "@tanstack/react-query";
 
 const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
@@ -30,7 +30,6 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             const response = await action(formData);
             loggedIn(response.token);
             console.log(isRegister ? 'Registration success:' : 'Login success:', response);
-            queryClient.invalidateQueries(['items']);
             queryClient.invalidateQueries(['favoriteItemIds']);
             navigate('/');
         } catch (error) {

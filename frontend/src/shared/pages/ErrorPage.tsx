@@ -4,7 +4,7 @@ import BasePage from "./BasePage.tsx"
 const ErrorPage = () => {
   return (
     <BasePage>
-      <Typography>ErrorPage</Typography>
+      <Typography color='text'>ErrorPage</Typography>
     </BasePage>
   )
 }

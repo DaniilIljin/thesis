@@ -9,9 +9,10 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import LoginPage from "./user/pages/LoginPage.tsx";
 import SignupPage from "./user/pages/SignupPage.tsx";
 import AddItem from "./item/pages/AddItemPage.tsx";
-import {AuthProvider} from "./context/AuthProvider.tsx";
+import {AuthProvider} from "./context/AuthContext.tsx";
 import UserItemsPage from "./userItems/pages/UserItemsPage.tsx";
 import UserFavoritesPage from "./userItems/pages/UserLikedItems.tsx";
+import EditItem from "./item/pages/EditItemPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
                 {
                     path: "addItem",
                     element: <AddItem/>,
+                },
+                {
+                    path: "editItem/:id",
+                    element: <EditItem/>,
                 },
                 {
                     path: "myItems",

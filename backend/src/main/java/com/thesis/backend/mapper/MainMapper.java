@@ -3,6 +3,7 @@ package com.thesis.backend.mapper;
 import com.thesis.backend.dto.BrandDTO;
 import com.thesis.backend.dto.SizeDTO;
 import com.thesis.backend.dto.UserDTO;
+import com.thesis.backend.dto.item.CategoryViewDTO;
 import com.thesis.backend.dto.shop.CategoryDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.model.*;
@@ -32,7 +33,15 @@ public class MainMapper {
         return modelMapper.map(category, CategoryDTO.class);
     }
 
+    public CategoryViewDTO toCategoryViewDTO(Category category) {
+        return modelMapper.map(category, CategoryViewDTO.class);
+    }
+
     public ItemDTO toItemDTO(Item item) {
-        return modelMapper.map(item, ItemDTO.class);
+        ItemDTO itemDTO = modelMapper.map(item, ItemDTO.class);
+        if (!item.getPictures().isEmpty()) {
+            itemDTO.setPictureFileName(item.getPictures().getFirst().getFileName());
+        }
+        return itemDTO;
     }
 }

@@ -1,21 +1,20 @@
 package com.thesis.backend.service;
 
+import com.thesis.backend.dto.PictureDTO;
 import com.thesis.backend.dto.UserDTO;
 import com.thesis.backend.dto.item.ItemAddDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
 import com.thesis.backend.mapper.ItemMapper;
 import com.thesis.backend.mapper.MainMapper;
-import com.thesis.backend.model.Category;
-import com.thesis.backend.model.Item;
-import com.thesis.backend.model.LikedItem;
-import com.thesis.backend.model.User;
+import com.thesis.backend.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,38 +56,68 @@ public class ItemService {
 
     @Transactional
     public ItemViewDTO createItem(ItemAddDTO itemAddDTO) {
-
+        // Authenticate and get the user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        User user = unitOfWork.getUserRepository().findByUsername(username).orElseThrow(RuntimeException::new);
+        User user = unitOfWork.getUserRepository().findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Create and populate the item
         Item item = new Item();
-
         item.setSeller(user);
-
         item.setName(itemAddDTO.getName());
         item.setPrice(itemAddDTO.getPrice());
+        item.setDescription(itemAddDTO.getDescription());
+        item.setPictures(new ArrayList<>());
 
+        // Handle picture files (uploaded to S3 or similar)
+        if (itemAddDTO.getPictures() != null) {
+            for (PictureDTO pictureDTO : itemAddDTO.getPictures()) {
+                Picture picture = new Picture();
+                picture.setItem(item);
 
+                // Assuming file is uploaded to S3, we store the file name or URL
+                // You need to upload the actual file and get the URL or file name for storage
+                String fileName = pictureDTO.getFileName(); // Assuming this is the name of the file in S3
+                picture.setFileName(fileName);
+
+                // Add the picture to the item
+                item.getPictures().add(picture);
+            }
+        }
+
+        // Set category (if provided)
         if (itemAddDTO.getCategoryId() != null) {
             Category category = unitOfWork.getCategoryRepository()
-                    .findById(itemAddDTO.getCategoryId()).get();
-
+                    .findById(itemAddDTO.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("Category ID not found"));
             item.setCategory(category);
         } else {
             throw new IllegalArgumentException("Category ID is required.");
         }
 
+        // Set brand, size (if provided)
         if (itemAddDTO.getBrandId() != null) {
-            item.setBrand(unitOfWork.getBrandRepository().findById(itemAddDTO.getBrandId()).get());
+            Brand brand = unitOfWork.getBrandRepository()
+                    .findById(itemAddDTO.getBrandId())
+                    .orElseThrow(() -> new IllegalArgumentException("Brand ID not found"));
+            item.setBrand(brand);
         }
 
         if (itemAddDTO.getSizeId() != null) {
-            item.setSize(unitOfWork.getSizeRepository().findById(itemAddDTO.getSizeId()).get());
+            Size size = unitOfWork.getSizeRepository()
+                    .findById(itemAddDTO.getSizeId())
+                    .orElseThrow(() -> new IllegalArgumentException("Size ID not found"));
+            item.setSize(size);
         }
 
-        return itemMapper.toItemViewDTO(unitOfWork.getItemRepository().save(item));
+        // Save the item
+        Item savedItem = unitOfWork.getItemRepository().save(item);
+
+        // Map the saved item to a DTO
+        return itemMapper.toItemViewDTO(savedItem);
     }
+
 
     public void toggleFavorite(Long itemId) {
         User user = getUser();

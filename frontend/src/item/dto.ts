@@ -1,11 +1,10 @@
-export type ItemDTO = {
+export type ItemFullDTO = {
     name: string;
     price: string;
     category: CategoryDTO;
     brand: BrandDTO;
     size: SizeDTO
     description: string;
-    sellerName: string;
     pictures: PictureDTO[];
 };
 
@@ -25,9 +24,8 @@ export type SizeDTO = {
 };
 
 export type PictureDTO = {
-    id: number;
-    name: string;
-    location: string
+    id?: number;
+    fileName: string;
 }
 
 export interface ItemAddDTO {
@@ -37,7 +35,7 @@ export interface ItemAddDTO {
     sizeId?: number;
     description: string;
     price: number;
-    images?: string[];
+    pictures: PictureDTO[];
 }
 
 export type UserDTO = {

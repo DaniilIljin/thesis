@@ -1,6 +1,7 @@
 import React from "react";
-import { Dialog, DialogContent, DialogTitle, Button, Box, Typography } from "@mui/material";
+import {Dialog, DialogContent, DialogTitle, Box, Typography, IconButton} from "@mui/material";
 import {UserDTO} from "../dto.ts";
+import CloseIcon from '@mui/icons-material/Close';
 
 type UserContactModalProps = {
     user: UserDTO;
@@ -17,17 +18,17 @@ const UserContactModal = ({ user, open, onClose }: UserContactModalProps) => {
             }
         }}>
             <DialogTitle sx={{ textAlign: "center" }}>
-                User Contact Information
+                Müüja kontakt info
             </DialogTitle>
             <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, paddingBottom: 2 }}>
-                <Typography variant="h6">Full Name: {user.fullName}</Typography>
-                <Typography variant="body1">Phone Number: {user.phone}</Typography>
+                <Typography variant="h6">Nimi: {user.fullName}</Typography>
+                <Typography variant="body1">Telefoninumber: {user.phone}</Typography>
                 <Typography variant="body1">Email: {user.email}</Typography>
             </DialogContent>
             <Box sx={{ display: "flex", justifyContent: "center", paddingBottom: 2 }}>
-                <Button onClick={onClose} variant="contained" color="primary">
-                    Close
-                </Button>
+                <IconButton onClick={onClose} color="primary">
+                    <CloseIcon/>
+                </IconButton>
             </Box>
         </Dialog>
     );

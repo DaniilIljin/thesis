@@ -3,10 +3,10 @@ export type BrandDTO = {
     name: string;
 };
 
-export type CategoryDTO = {
+export type CategoryTreeDTO = {
     id: number;
     name: string;
-    subCategories: CategoryDTO[];
+    subCategories: CategoryTreeDTO[];
 };
 
 export type SizeDTO = {
@@ -20,5 +20,7 @@ export type ItemDTO = {
     price: number;
     sizeName: string;
     brandName: string;
-    firstPictureUrl: string;
+    pictureFileName: string;
 };
+
+

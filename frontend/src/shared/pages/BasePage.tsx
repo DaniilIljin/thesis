@@ -3,6 +3,7 @@ import Background from "../components/Background.tsx";
 import Header from "../components/Header.tsx";
 import React, { useState } from "react";
 import { theme1, theme2 } from "../theme.ts";
+import {DefaultImageProvider} from "../../context/DefaultImageContext.tsx";
 
 type BasePageProps = {
     children?: React.ReactNode;
@@ -23,6 +24,7 @@ const BasePage: React.FC<BasePageProps> = ({ children }) => {
     return (
         <>
             <ThemeProvider theme={themeMode ? theme1 : theme2}>
+                <DefaultImageProvider>
                 <CssBaseline />
                 <Background>
                 <Container>
@@ -30,6 +32,7 @@ const BasePage: React.FC<BasePageProps> = ({ children }) => {
                     {children}
                 </Container>
                 </Background>
+                </DefaultImageProvider>
             </ThemeProvider>
         </>
     );

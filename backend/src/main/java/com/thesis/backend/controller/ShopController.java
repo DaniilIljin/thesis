@@ -2,6 +2,7 @@ package com.thesis.backend.controller;
 
 import com.thesis.backend.dto.BrandDTO;
 import com.thesis.backend.dto.SizeDTO;
+import com.thesis.backend.dto.item.CategoryViewDTO;
 import com.thesis.backend.dto.item.ItemViewDTO;
 import com.thesis.backend.dto.shop.CategoryDTO;
 import com.thesis.backend.dto.shop.ItemDTO;
@@ -34,11 +35,18 @@ public class ShopController {
     }
 
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        List<CategoryDTO> categories = mainService.getAllCategories();
+    @GetMapping("/categoriesTree")
+    public ResponseEntity<List<CategoryDTO>> getAllCategoriesTree() {
+        List<CategoryDTO> categories = mainService.getAllCategoriesTree();
         return ResponseEntity.ok(categories);
     }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryViewDTO>> getAllCategories() {
+        List<CategoryViewDTO> categories = mainService.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
 
     @GetMapping("/brands")
     public ResponseEntity<List<BrandDTO>> getAllBrands() {

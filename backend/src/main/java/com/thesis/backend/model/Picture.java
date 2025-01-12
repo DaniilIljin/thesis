@@ -22,7 +22,4 @@ public class Picture {
     @Column(nullable = false, length = 30)
     private String fileName;
 
-    @Column(nullable = false)
-    private String fileLocation;
-
 }

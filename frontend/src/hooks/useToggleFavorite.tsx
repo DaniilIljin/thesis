@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postFavoriteItem } from "../shop/api.ts";
+import { postFavoriteItem } from "../api/item";
 
 type UseToggleFavoriteProps = {
     itemId: number;
@@ -15,7 +15,6 @@ export const useToggleFavorite = ({ itemId, initialIsToggled }: UseToggleFavorit
         mutationFn: () => postFavoriteItem(itemId),
         onSuccess: () => {
             queryClient.invalidateQueries(["favoriteItemIds"]);
-            queryClient.invalidateQueries(["items"]);
         },
         onError: (error) => {
             console.error("Failed to toggle favorite item:", error);

@@ -10,5 +10,5 @@ public class ItemDTO {
     private BigDecimal price;
     private String sizeName;
     private String brandName;
-    private String pictureUrl;
+    private String pictureFileName;
 }

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CategoryAccordion from "./CategoryAccordion.tsx";
 import { useQuery } from "@tanstack/react-query";
-import { BrandDTO, CategoryDTO } from "../dto.ts";
+import { BrandDTO, CategoryTreeDTO } from "../dto.ts";
 import { fetchBrands, fetchCategories } from "../api.ts";
 import {useFilterContext} from "../../context/FilterContext.tsx";
 import {useState} from "react";
@@ -23,7 +23,7 @@ const SidePanel = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
 
 
-    const { data: categories, isLoading, error } = useQuery<CategoryDTO[]>({
+    const { data: categories, isLoading, error } = useQuery<CategoryTreeDTO[]>({
         queryKey: ["categories"],
         queryFn: fetchCategories,
     });
@@ -51,7 +51,7 @@ const SidePanel = () => {
                         fullWidth
                         variant="outlined"
                         size="small"
-                        placeholder="Search..."
+                        placeholder="Otsing..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         InputProps={{
@@ -95,7 +95,7 @@ const SidePanel = () => {
                             fontSize: "16px",
                         }}
                     >
-                        price
+                        hind
                     </Button>
                 </Box>
                 <Divider />
@@ -107,7 +107,7 @@ const SidePanel = () => {
                 >
                     <Typography
                     onClick={() => resetParams()}
-                    >All</Typography>
+                    >Kõik</Typography>
                 </Box>
 
                 {categories.map((category, index) => (

@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .cors(c -> c.configurationSource(customCorsConfiguration))
                 .authorizeHttpRequests(
                         req -> req
-                                .requestMatchers("/login", "/register", "api/shop/**")
+                                .requestMatchers("/login", "/register", "api/shop/**", "/api/s3/download")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

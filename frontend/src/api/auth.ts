@@ -1,4 +1,4 @@
-import apiClient from "../shared/Axios.ts";
+import apiClient from "./Axios.ts";
 
 export const login = async (credentials: { username: string, password: string }) => {
     try {

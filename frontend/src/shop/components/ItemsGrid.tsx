@@ -4,15 +4,12 @@ import {
 } from "@mui/material";
 import ItemCard from "./ItemCard.tsx";
 import {useQuery} from "@tanstack/react-query";
-import { fetchItems} from "../api.ts";
-import {ItemDTO} from "../dto.ts";
-import {useAuth} from "../../context/AuthProvider.tsx";
+import {fetchItems} from "../../api/item.ts";
+import {ItemDTO} from "../../dto/itemDto.ts";
 import {useFilterContext} from "../../context/FilterContext.tsx";
 import {useFavoriteIds} from "../../hooks/useFaviteIds.tsx";
 
 const ItemsGrid = () => {
-
-    const {isAuthorized} = useAuth()
 
     const {categoryId, brandId, priceSort, searchQuery} = useFilterContext()
 
@@ -21,7 +18,7 @@ const ItemsGrid = () => {
         queryFn: () => fetchItems(categoryId, brandId, priceSort, searchQuery)
     });
 
-    const { data: favoriteIds } = useFavoriteIds(isAuthorized);
+    const { data: favoriteIds } = useFavoriteIds();
 
     if (isLoading) return <div>Loading...</div>;
 

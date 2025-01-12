@@ -12,7 +12,7 @@ import {
     ButtonGroup,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import MenuIcon from "@mui/icons-material/Menu";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FolderIcon from "@mui/icons-material/Folder";
@@ -41,7 +41,7 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
 
     const authLinks = (
         <ButtonGroup>
-            <Tooltip title="Logout" arrow>
+            <Tooltip title="Logi välja" arrow>
                 <IconButton onClick={handleLogout} color="inherit">
                     <LogoutIcon />
                 </IconButton>
@@ -56,12 +56,12 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
 
     const guestLinks = (
         <ButtonGroup>
-            <Tooltip title="Sign Up" arrow>
+            <Tooltip title="Registreeri" arrow>
                 <IconButton component={RouterLink} to="/signup" color="inherit">
                     <AppRegistrationIcon />
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Login" arrow>
+            <Tooltip title="Logi sisse" arrow>
                 <IconButton component={RouterLink} to="/login" color="inherit">
                     <LoginIcon />
                 </IconButton>
@@ -74,16 +74,16 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
             <AppBar sx={{ borderRadius: 2, mt: 1 }} position="static">
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <Typography variant="h6" sx={{ fontFamily: 'Cooper Black, sans-serif', fontSize: 'large' }}>
-                        <Tooltip title="Home page">
+                        <Tooltip title="Avaleht">
                             <Link component={RouterLink} color="inherit" underline="none" to={"/"}>
-                                selling platform
+                                E-kirbuturg
                             </Link>
                         </Tooltip>
                     </Typography>
 
                     {isAuthorized && (
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Tooltip title="My favorites">
+                            <Tooltip title="Lemmikud">
                                 <Link component={RouterLink} to="/myFavorites" color="inherit">
                                     <IconButton color="inherit">
                                         <FavoriteIcon />
@@ -91,7 +91,7 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                                 </Link>
                             </Tooltip>
 
-                            <Tooltip title="My items">
+                            <Tooltip title="Minu kuulutused">
                                 <Link component={RouterLink} to="/myItems" color="inherit">
                                     <IconButton color="inherit">
                                         <FolderIcon />
@@ -99,7 +99,7 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                                 </Link>
                             </Tooltip>
 
-                            <Tooltip title="Add new item">
+                            <Tooltip title="Lisa kuulutus">
                                 <Link component={RouterLink} to="/addItem" color="inherit">
                                     <IconButton color="inherit">
                                         <AddIcon />
@@ -124,7 +124,7 @@ const Header = ({ themeMode, toggleThemeMode }: Props) => {
                             {isAuthorized ? authLinks : guestLinks}
                         </Box>
 
-                        <Tooltip title={"Switch theme"}>
+                        <Tooltip title={"Vaheta teemaat"}>
                             <Switch checked={themeMode} onChange={toggleThemeMode} color="primary" />
                         </Tooltip>
                     </Box>

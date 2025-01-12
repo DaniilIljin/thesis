@@ -1,8 +1,9 @@
-import {Grid, Typography} from "@mui/material";
+import {Grid} from "@mui/material";
 import {useQuery} from "@tanstack/react-query";
-import {ItemDTO} from "../dto.ts";
-import {fetchUserItems} from "../api.ts";
+import {ItemDTO} from "../../dto/itemDto.ts";
+import {fetchUserItems} from "../../api/item.ts";
 import UserItemCard from "../components/UserItemCard.tsx";
+import NoDataBox from "../../shared/components/NoDataBox.tsx";
 
 const UserItemsPage = () => {
 
@@ -15,7 +16,7 @@ const UserItemsPage = () => {
     if (error instanceof Error)
         return <div>Error: {error?.name}</div>
 
-    if (!data || data.length === 0) return <Typography variant='h4' color="inherit">No data available</Typography>;
+    if (!data || data.length === 0) return <NoDataBox/>;
 
 return (
     <>
