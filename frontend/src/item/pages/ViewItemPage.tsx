@@ -61,8 +61,6 @@ const ViewItemPage = () => {
 
     if (!item) return <Typography variant="h4" color="inherit">No item found</Typography>;
 
-    console.log(data)
-
     const images = isOriginalImage ? data : defaultImages;
 
     return (

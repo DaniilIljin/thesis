@@ -22,11 +22,13 @@ const UserLikedItems = () => {
 
     if (!data || data.length === 0) return <NoDataBox/>;
 
+    console.log(data.map(i => i.id));
+
     return (
         <>
             <Grid justifyContent='center' container mt={1} spacing={2}>
-                {data.map((item, index) => (
-                    <Grid item xs={10} sm={4} md={3} key={index}>
+                {data.map((item) => (
+                    <Grid item xs={10} sm={4} md={3}>
                         <ItemCard item={item} isToggled={ids?.includes(item.id) || false} />
                     </Grid>
                 ))}

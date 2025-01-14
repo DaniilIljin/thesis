@@ -30,9 +30,9 @@ const ItemsGrid = () => {
     return (
         <>
             <Grid container spacing={2}>
-                {items.map((item, index) => {
+                {items.map((item) => {
                     return (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Grid item xs={12} sm={6} md={4}>
                             <ItemCard item={item} isToggled={favoriteIds?.includes(item.id) || false} />
                         </Grid>
                     );

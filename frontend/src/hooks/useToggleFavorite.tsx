@@ -21,9 +21,9 @@ export const useToggleFavorite = ({ itemId, initialIsToggled }: UseToggleFavorit
         },
     });
 
-    const toggleFavorite = () => {
-        setIsToggled((prev) => !prev);
+    const toggleFavorite =  async () => {
         mutation.mutate();
+        setIsToggled((i) => !i);
     };
 
     return {

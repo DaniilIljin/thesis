@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, useEffect, ChangeEvent} from "react";
 import {useForm, Controller} from "react-hook-form";
 import {useQuery} from "@tanstack/react-query";
 import {
@@ -21,7 +21,10 @@ import Carousel from "react-material-ui-carousel";
 import {fetchCategories, fetchBrands, fetchSizes, uploadImagesToS3} from "../../api/common.ts";
 import {fetchItemById} from "../../api/item.ts"
 import {useNavigate, useParams} from "react-router-dom";
-import {ItemAddDTO,ItemFullDTO, PictureDTO} from "../../dto/itemDto.ts";
+import {ItemFullDTO} from "../../dto/itemDto.ts";
+import {FilePresignedUrlDTO, PictureDTO} from "../../dto/common.ts";
+import {fetchItemImageUrls} from "../../api/images.ts";
+import {useDefaultImageContext} from "../../context/DefaultImageContext.tsx";
 
 interface FormValues {
     name: string;
@@ -34,27 +37,42 @@ interface FormValues {
 
 const EditItemPage: React.FC = () => {
     const {id} = useParams<{ id: number }>();
-    const [images, setImages] = useState<{ src: string; file?: File }[]>([]);
+    const [images, setImages] = useState<FilePresignedUrlDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const {control, handleSubmit, reset} = useForm<FormValues>();
     const navigate = useNavigate();
-
-    const { data: item } = useQuery<ItemFullDTO>({
+    const {defaultImages, defaultFileNames} = useDefaultImageContext()
+    const { data: item } = useQuery<ItemFullDTO, Error>({
         queryKey: ["item", id],
         queryFn: () => fetchItemById(id!),
-        onSuccess: (data: ItemFullDTO) => {
-            reset({
-                name: data.name,
-                categoryId: data.category.id,
-                brandId: data.brand.id,
-                sizeId: data.size.id,
-                description: data.description,
-                price: parseFloat(data.price),
-            });
-            setImages(data.pictures.map((picture) => ({ src: picture.fileName })));
-        },
-        enabled: !!id
+        enabled: !!id,
     });
+
+    const isOriginalImage = item?.pictures && item.pictures.length !== 0 && !defaultFileNames.includes(item.pictures[0].fileName);
+
+    const fileNames = item?.pictures.map(picture => picture.fileName);
+
+    const { data } = useQuery({
+        queryKey: ["itemImage", fileNames],
+        queryFn: () => fetchItemImageUrls(fileNames!),
+        enabled: isOriginalImage,
+    });
+
+    if (!item) return <Typography variant="h4" color="inherit">No item found</Typography>;
+
+    useEffect(() => {
+        if (item) {
+            reset({
+                name: item.name,
+                categoryId: item.category.id,
+                brandId: item.brand.id,
+                sizeId: item.size.id,
+                description: item.description,
+                price: parseFloat(item.price),
+            });
+            setImages(isOriginalImage ? data! : defaultImages)
+        }
+    }, [item, reset]);
 
     const {data: categories = []} = useQuery({
         queryKey: ["categories"],
@@ -123,6 +141,7 @@ const EditItemPage: React.FC = () => {
             setLoading(false);
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
