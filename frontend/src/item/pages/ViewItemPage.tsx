@@ -26,20 +26,6 @@ const ViewItemPage = () => {
     const { id } = useParams<{ id: string }>();
     const { defaultImages, defaultFileNames } = useDefaultImageContext();
 
-    const { data: item} = useQuery<ItemFullDTO>({
-        queryKey: ['item', id],
-        queryFn: () => fetchItemById(parseInt(id!)),
-        enabled: Boolean(id),
-    });
-
-    const { isAuthorized } = useAuth();
-
-    const user = useQuery<UserDTO>({
-        queryKey: ["userByItemId", id],
-        queryFn: () => fetchUserByItemId(parseInt(id!)),
-        enabled: isAuthorized && !!id,
-    });
-
     const { data: favoriteIds } = useFavoriteIds();
 
     const [openModal, setOpenModal] = useState(false);
@@ -48,10 +34,23 @@ const ViewItemPage = () => {
         setOpenModal((prev) => !prev);
     };
 
+    const { isAuthorized } = useAuth();
+
+    const { data: item} = useQuery<ItemFullDTO>({
+        queryKey: ['item', id],
+        queryFn: () => fetchItemById(parseInt(id!)),
+        enabled: Boolean(id),
+    });
+
+    const user = useQuery<UserDTO>({
+        queryKey: ["userByItemId", id],
+        queryFn: () => fetchUserByItemId(parseInt(id!)),
+        enabled: !!id,
+    });
+
     const isOriginalImage = item?.pictures && item.pictures.length !== 0 && !defaultFileNames.includes(item.pictures[0].fileName);
 
     const fileNames = item?.pictures.map(picture => picture.fileName);
-
 
     const { data } = useQuery({
         queryKey: ["itemImage", fileNames],
@@ -62,6 +61,8 @@ const ViewItemPage = () => {
     if (!item) return <Typography variant="h4" color="inherit">No item found</Typography>;
 
     const images = isOriginalImage ? data : defaultImages;
+
+    console.log(fileNames)
 
     return (
         <Box sx={{ padding: 4 }}>

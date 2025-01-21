@@ -56,13 +56,13 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
                 >
                     <Box component="form" onSubmit={handleSubmit} sx={{ flexGrow: 1 }} noValidate>
                         <Typography component="h1" variant="h5">
-                            {isRegister ? 'Sign Up' : 'Log In'}
+                            {isRegister ? 'Konto registreerimine' : 'Sisse logimine'}
                         </Typography>
                         <TextField
                             margin="normal"
                             required
                             id="username"
-                            label="Username"
+                            label="Kasutajanimi"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
@@ -73,7 +73,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
                             margin="normal"
                             required
                             name="password"
-                            label="Password"
+                            label="Parool"
                             type="password"
                             id="password"
                             value={formData.password}
@@ -87,7 +87,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
                             color="primary"
                             sx={{ marginTop: theme.spacing(3) }}
                         >
-                            {isRegister ? 'Sign Up' : 'Sign In'}
+                            {isRegister ? 'Registreeri' : 'Logi sisse'}
                         </Button>
                     </Box>
                 </Box>

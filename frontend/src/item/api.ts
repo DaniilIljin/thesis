@@ -36,9 +36,6 @@ export const uploadImagesToS3 = async (images: { file: File }[]): Promise<string
     }
 };
 
-
-
-
 export const fetchUserByItemId = (itemId: number): Promise<UserDTO> => {
     return apiClient.get(`/api/items/contact/${itemId}`)
         .then(response => {
@@ -70,10 +67,11 @@ export const fetchSizes = async (): Promise<SizeDTO[]> => {
 };
 
 
-export const addItem = (data: ItemAddDTO): Promise<void> => {
+export const addItem = (data: ItemAddDTO): Promise<ItemAddDTO> => {
     return apiClient.post('/api/items', data)
         .then(response => {
             console.log('Item added successfully:', response.data);
+            return data
         })
 };
 

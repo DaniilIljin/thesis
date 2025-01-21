@@ -21,6 +21,7 @@ export type ItemFullDTO = {
 };
 
 export interface ItemAddDTO {
+    id?: number;
     name: string;
     categoryId: number;
     brandId?: number;

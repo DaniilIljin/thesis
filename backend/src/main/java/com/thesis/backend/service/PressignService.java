@@ -3,6 +3,7 @@ package com.thesis.backend.service;
 import com.thesis.backend.dto.FileNamesDTO;
 import com.thesis.backend.dto.FilePresignedUrlDTO;
 import com.thesis.backend.model.User;
+import com.thesis.backend.repository.PictureRepository;
 import com.thesis.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +27,8 @@ public class PressignService {
     private final S3Presigner presigner;
 
     private final UserRepository userRepository;
+
+    private final PictureRepository pictureRepository;
 
     @Value("${BUCKET_NAME}")
     private String bucket;
@@ -58,23 +62,30 @@ public class PressignService {
 
     public List<FilePresignedUrlDTO> putPreSignedUrlsWithFilenames(FileNamesDTO fileNames) {
         User user = getUser();
-        return fileNames.getFileNames().stream()
-                .map(fileName -> {
-                    String newFilename = String.format("%s/%s", user.getUsername(), fileName);
-                    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                            .bucket(bucket)
-                            .key(newFilename)
-                            .build();
+        List<FilePresignedUrlDTO> presignedUrls = new ArrayList<>();
 
-                    PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
-                            .signatureDuration(Duration.ofMinutes(5))
-                            .putObjectRequest(putObjectRequest)
-                            .build();
+        for (String fileName : fileNames.getFileNames()) {
+            String newFilename = String.format("%s/%s", user.getUsername(), fileName);
 
-                    String url = presigner.presignPutObject(putObjectPresignRequest).url().toString();
-                    return new FilePresignedUrlDTO(newFilename, url);
-                })
-                .toList();
+//            if (pictureRepository.findPictureByFileName(newFilename).isPresent()) {
+//                continue;
+//            }
+
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(newFilename)
+                    .build();
+
+            PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
+                    .signatureDuration(Duration.ofMinutes(5))
+                    .putObjectRequest(putObjectRequest)
+                    .build();
+
+            String url = presigner.presignPutObject(putObjectPresignRequest).url().toString();
+            presignedUrls.add(new FilePresignedUrlDTO(newFilename, url));
+        }
+
+        return presignedUrls;
     }
 
 

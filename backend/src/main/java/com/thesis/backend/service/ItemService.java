@@ -80,9 +80,6 @@ public class ItemService {
                 // You need to upload the actual file and get the URL or file name for storage
                 String fileName = pictureDTO.getFileName(); // Assuming this is the name of the file in S3
                 picture.setFileName(fileName);
-
-                // Add the picture to the item
-                item.getPictures().add(picture);
             }
         }
 
@@ -113,6 +110,9 @@ public class ItemService {
 
         // Save the item
         Item savedItem = unitOfWork.getItemRepository().save(item);
+
+        System.out.println("-----------------------------------------------------------------------------------");
+        System.out.println(savedItem.getPictures());
 
         // Map the saved item to a DTO
         return itemMapper.toItemViewDTO(savedItem);

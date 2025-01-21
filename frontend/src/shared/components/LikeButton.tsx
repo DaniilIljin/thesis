@@ -9,14 +9,13 @@ type Props = {
     initialIsToggled: boolean,
 };
 const LikeButton = (props: Props) => {
-    const { isToggled, toggleFavorite } = useToggleFavorite({
+    const { toggleFavorite } = useToggleFavorite({
         itemId: props.itemId,
-        initialIsToggled: props.initialIsToggled || false,
     });
 
     return (
         <IconButton onClick={toggleFavorite} color="primary">
-            {isToggled ? (
+            {props.initialIsToggled ? (
                 <FavoriteSharpIcon />
             ) : (
                 <FavoriteBorderIcon />

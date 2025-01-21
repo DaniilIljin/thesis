@@ -1,8 +1,8 @@
 -- Users
 INSERT INTO app_user (username, password, role, email, phone, full_name)
 VALUES
-    ('john_doe', '$2a$12$muEb5faSxzEs3kH8BGWzT.ua1RWYn9UozJZTWP9c.diWlrSSOzpdq', 'USER', 'john.doe@example.com', '123-456-7890', 'John Doe'),
-    ('admin_user', '$2a$12$oxukuXvpAbRJNMws9BRltO39PtjygvxDz3eVgooK.vUwKnzYweFta', 'ADMIN', 'admin.user@example.com', '987-654-3210', 'Admin User');
+    ('john_doe', '$2a$12$muEb5faSxzEs3kH8BGWzT.ua1RWYn9UozJZTWP9c.diWlrSSOzpdq', 'USER', 'john.doe@example.com', '123-456-7890', 'John Doe'), -- password123
+    ('admin_user', '$2a$12$oxukuXvpAbRJNMws9BRltO39PtjygvxDz3eVgooK.vUwKnzYweFta', 'ADMIN', 'admin.user@example.com', '987-654-3210', 'Admin User'); -- adminpass123
 
 -- Sizes
 INSERT INTO size (name)

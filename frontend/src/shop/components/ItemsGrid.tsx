@@ -18,7 +18,6 @@ const ItemsGrid = () => {
         queryFn: () => fetchItems(categoryId, brandId, priceSort, searchQuery)
     });
 
-    const { data: favoriteIds } = useFavoriteIds();
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -30,10 +29,10 @@ const ItemsGrid = () => {
     return (
         <>
             <Grid container spacing={2}>
-                {items.map((item) => {
+                {items.map((item, index) => {
                     return (
-                        <Grid item xs={12} sm={6} md={4}>
-                            <ItemCard item={item} isToggled={favoriteIds?.includes(item.id) || false} />
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                            <ItemCard item={item} />
                         </Grid>
                     );
                 })}

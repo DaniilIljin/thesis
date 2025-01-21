@@ -40,13 +40,6 @@ export const deleteUserItem = (id: number): Promise<void> => {
         })
 };
 
-export const deleteItem = (id: number): Promise<void> => {
-    return apiClient.delete(`/api/items/${id}`)
-        .then(() => {
-            alert('Item deleted successfully');
-        })
-};
-
 export const fetchFavoriteIds = async (): Promise<number[]> => {
     return apiClient.get('/api/items/favoriteIds')
         .then(response => response.data)
@@ -65,3 +58,6 @@ export const addItem = (data: ItemAddDTO): Promise<void> => {
             console.log('Item added successfully:', response.data);
         })
 };
+
+export const updateItem = ()=>{
+}

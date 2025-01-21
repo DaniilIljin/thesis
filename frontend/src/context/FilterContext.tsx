@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 type FilterContextType = {
     categoryId: number | undefined;
@@ -23,11 +24,13 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     const [brandId, setBrandId] = useState<number | undefined>(undefined);
     const [priceSort, setPriceSort] = useState<"asc" | "desc">("asc");
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const queryClient = useQueryClient()
 
     const resetParams = () => {
         setSearchQuery("");
         setBrandId(undefined)
         setCategoryId(undefined)
+        queryClient.invalidateQueries('favoriteItemIds')
     }
 
     const handleCategoryClick = (categoryId: number) => {
@@ -49,6 +52,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     const togglePriceSort = () => {
         setPriceSort((prev) => (prev === "asc" ? "desc" : "asc")); // Toggle price sort
     };
+
 
     return (
         <FilterContext.Provider

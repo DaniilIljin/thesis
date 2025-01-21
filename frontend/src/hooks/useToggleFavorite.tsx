@@ -1,15 +1,12 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postFavoriteItem } from "../api/item";
 
 type UseToggleFavoriteProps = {
     itemId: number;
-    initialIsToggled: boolean;
 };
 
-export const useToggleFavorite = ({ itemId, initialIsToggled }: UseToggleFavoriteProps) => {
+export const useToggleFavorite = ({ itemId }: UseToggleFavoriteProps) => {
     const queryClient = useQueryClient();
-    const [isToggled, setIsToggled] = useState(initialIsToggled);
 
     const mutation = useMutation({
         mutationFn: () => postFavoriteItem(itemId),
@@ -23,11 +20,9 @@ export const useToggleFavorite = ({ itemId, initialIsToggled }: UseToggleFavorit
 
     const toggleFavorite =  async () => {
         mutation.mutate();
-        setIsToggled((i) => !i);
     };
 
     return {
-        isToggled,
         toggleFavorite,
     };
 };
