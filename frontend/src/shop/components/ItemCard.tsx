@@ -4,14 +4,18 @@ import { ItemDTO } from "../../dto/itemDto.ts";
 import { useAuth } from "../../context/AuthContext.tsx";
 import LikeButton from "../../shared/components/LikeButton.tsx";
 import SharedItemCard from "../../shared/components/SharedItemCard.tsx";
+import {useFavoriteIds} from "../../hooks/useFaviteIds.tsx";
+import {useEffect, useState} from "react";
 
 type Props = {
     item: ItemDTO;
-    isToggled: boolean;
+    toggled: boolean;
 };
 
-const ItemCard = ({ item, isToggled }: Props) => {
+const ItemCard = ({ item, toggled }: Props) => {
     const navigate = useNavigate();
+    const [isToggled, setIsToggled] = useState(false);
+
     const { isAuthorized } = useAuth();
 
     const handleClick = () => {
@@ -21,6 +25,19 @@ const ItemCard = ({ item, isToggled }: Props) => {
             console.error("Item ID is undefined");
         }
     };
+
+    if (isAuthorized){
+        const ids = useFavoriteIds()
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            if (ids.data?.includes(item.id)) {
+                setIsToggled(true); // Mark as toggled if the item ID is in the list
+            } else {
+                setIsToggled(false); // Otherwise, mark as not toggled
+            }
+        }, [ids.data, item.id]);
+    }
 
     return (
         <SharedItemCard item={item} onClick={handleClick}>

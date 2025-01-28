@@ -16,7 +16,7 @@ const LikeButton = (props: Props) => {
 
     return (
         <IconButton onClick={toggleFavorite} color="primary">
-            {isToggled ? (
+            {props.initialIsToggled ? (
                 <FavoriteSharpIcon />
             ) : (
                 <FavoriteBorderIcon />
